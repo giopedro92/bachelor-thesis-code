@@ -1,17 +1,15 @@
 import time
-import numpy as np
-import tensorflow as tf
-import matplotlib.pyplot as plt
+import numpy               as np
+import tensorflow          as tf
+import matplotlib.pyplot   as plt
 
-from sklearn.svm import SVC
-from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm           import SVC
+from sklearn.ensemble      import GradientBoostingClassifier, RandomForestClassifier
+from sklearn.neighbors     import KNeighborsClassifier
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import accuracy_score, roc_curve, roc_auc_score, f1_score, precision_score, classification_report
-from tensorflow import keras
-from tensorflow.keras import layers
-
-
+from sklearn.metrics       import accuracy_score, roc_curve, roc_auc_score, f1_score, precision_score, classification_report
+from tensorflow            import keras
+from tensorflow.keras      import layers
 
 ################ Class for model definition, training and evaluation ################
 

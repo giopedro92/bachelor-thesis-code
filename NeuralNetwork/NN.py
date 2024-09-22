@@ -2,10 +2,10 @@
 
 import os
 import sys
-import numpy as np
-import include.DataPreparation as dl # Module for loading data
-import include.Classifier as clf # Module for defining classifiers
-import include.MetricPrinter as mp # Module for printing metrics
+import numpy                   as np
+import include.DataPreparation as dl  # Module for loading data
+import include.Classifier      as clf # Module for defining classifiers
+import include.MetricPrinter   as mp  # Module for printing metrics
 
 ############################### End import ###############################
 
@@ -36,9 +36,6 @@ if __name__ == "__main__":
     fileS_path = '../root-trees/signalNew_1_2.root'
     ## Background
     fileB_path = '../root-trees/background_1_2.root'
-
-    treeS = dataS["treeList_0_24_0_24_Sgn"]
-    treeB = dataB["treeList_0_24_0_24_Sgn"]
 
     ############################### Preparing data ###############################
 
@@ -72,6 +69,13 @@ if __name__ == "__main__":
                                 data_prep.y_train_cat2,
                                 data_prep.feature_names,
                                 model_type)
-    print("Training time ({}):".format(model_type), classifier.training_time)
-    classifier.evaluate_classifier(data_prep.X_test, data_prep.y_test, data_prep.X_test_cat1, data_prep.y_test_cat1, data_prep.X_test_cat2, data_prep.y_test_cat2)
+    print("Training time ({}):".format(model_type),
+          classifier.training_time)
+    classifier.evaluate_classifier(data_prep.X_test,
+                                   data_prep.y_test,
+                                   data_prep.X_test_cat1,
+                                   data_prep.y_test_cat1,
+                                   data_prep.X_test_cat2,
+                                   data_prep.y_test_cat2)
+    
     
