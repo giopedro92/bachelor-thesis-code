@@ -5,57 +5,86 @@ import pandas                as pd
 from sklearn.model_selection import train_test_split
 
 class DataPreparation:
+    # INIT
     def __init__(self,
                  file1_path,
-                 treeS_name="TreeS",
-                 treeB_name="TreeB"):
+                 treeS_name = "treeSgn",
+                 treeB_name = "treeBkg"):
+        
         '''
-        Constructor to initialize the DataPreparation object.
+        CONSTRUCTOR to initialize the DataPreparation object.
         Parameters:
         - file1_path (str): Path to the ROOT file containing data.
-        - treeS_name (str): Name of the signal tree. Default is "TreeS".
-        - treeB_name (str): Name of the background tree. Default is "TreeB".
+        - treeS_name (str): Name of the signal tree. Default is "treeSgn".
+        - treeB_name (str): Name of the background tree. Default is "treeBkg".
         This constructor sets the file path and tree names for the DataPreparation object.
         '''
-        # Initialize the DataPreparation object with the ROOT file path and tree names
+
+        # Initialize the DataPreparation OBJECT with the ROOT file path and tree names
         self.file1_path = file1_path
         self.treeS_name = treeS_name
         self.treeB_name = treeB_name
 
+    # LOAD DATA
     def load_data(self): # Loading data
-        
         file1 = uproot.open(self.file1_path)
         
         # Extract signal and background trees
-        treeS = file1[self.treeS_name]
-        treeB = file1[self.treeB_name]
+        TreeS_extract = file1[self.treeS_name]
+        TreeB_extract = file1[self.treeB_name]
 
-        # Load data from trees into Pandas DataFrames
-        self.df_signal     = treeS.arrays(library="pd")
-        self.df_background = treeB.arrays(library="pd")
+        # Load data from Trees into Pandas DataFrames
+        self.df_signal     = TreeS_extract.arrays(library = "pd")
+        self.df_background = TreeB_extract.arrays(library = "pd")
         
-        
+    # PREPARE DATA
     def prepare_data(self): # This function is designed to prepare data for the training and evaluation of a classification model.
         # Select features
-        X_signal           = self.df_signal[['var1', 'var2', 'var3', 'var4','eta']]
-        X_background       = self.df_background[['var1', 'var2', 'var3', 'var4','eta']]
-        self.feature_names = ['var1', 'var2', 'var3', 'var4','eta']
+        X_signal           = self.df_signal[['massK0S',
+                                             'tImpParBach',
+                                             'tImpParV0',
+                                             'CtK0S',
+                                             'cosPAK0S',
+                                             'nSigmapr',
+                                             'dcaV0']]
+        X_background       = self.df_background[['massK0S',
+                                                 'tImpParBach',
+                                                 'tImpParV0',
+                                                 'CtK0S',
+                                                 'cosPAK0S',
+                                                 'nSigmapr',
+                                                 'dcaV0']]
+        self.feature_names = ['massK0S',
+                              'tImpParBach',
+                              'tImpParV0',
+                              'CtK0S',
+                              'cosPAK0S',
+                              'nSigmapr',
+                              'dcaV0']
 
         ####### Normalize signal data by dividing by the maximum value of each variable #######
         
-        max_var1_signal = X_signal['var1'].max()
-        max_var2_signal = X_signal['var2'].max()
-        max_var3_signal = X_signal['var3'].max()
-        max_var4_signal = X_signal['var4'].max()
+        max_massK0S_signal     = X_signal['massK0S'].max()
+        max_tImpParBach_signal = X_signal['tImpParBach'].max()
+        max_tImpParV0_signal   = X_signal['tImpParV0'].max()
+        max_CtK0S_signal       = X_signal['CtK0S'].max()
+        max_cosPAK0S_signal    = X_signal['cosPAK0S'].max()
+        max_nSigmapr_signal    = X_signal['nSigmapr'].max()
+        max_dcaV0_signal       = X_signal['dcaV0'].max()
 
         X_signal_normalized     = pd.DataFrame()
         X_background_normalized = pd.DataFrame()
 
-        X_signal_normalized['var1'] = X_signal['var1'] / max_var1_signal
-        X_signal_normalized['var2'] = X_signal['var2'] / max_var2_signal
-        X_signal_normalized['var3'] = X_signal['var3'] / max_var3_signal
-        X_signal_normalized['var4'] = X_signal['var4'] / max_var4_signal
-        X_signal_normalized['eta']  = X_signal['eta'] # Noted that the data has not been normalised for the purpose of categorisation.
+        X_signal_normalized['massK0S']     = X_signal['massK0S']     / max_massK0S_signal
+        X_signal_normalized['tImpParBach'] = X_signal['tImpParBach'] / max_tImpParBach_signal
+        X_signal_normalized['tImpParV0']   = X_signal['tImpParV0']   / max_tImpParV0_signal
+        X_signal_normalized['CtK0S']       = X_signal['CtK0S']       / max_CtK0S_signal
+        X_signal_normalized['cosPAK0S']    = X_signal['cosPAK0S']    / max_cosPAK0S_signal
+        X_signal_normalized['nSigmapr']    = X_signal['nSigmapr']    / max_nSigmapr_signal
+        X_signal_normalized['dcaV0']       = X_signal['dcaV0']       / max_dcaV0_signal
+
+        # ???????????????????????????? NOI ABBIAMO UNA VARIABILE COSÌ ?????????????????????????
+        # X_signal_normalized['eta']  = X_signal['eta'] # Noted that the data has not been normalised for the purpose of categorisation.
 
         # Normalizzazione dei dati per sfondo dividendo per il massimo
         max_var1_background = X_background['var1'].max()

@@ -30,20 +30,13 @@ if __name__ == "__main__":
     
     if not os.path.exists("evaluation_results"):
         os.makedirs("evaluation_results")
-        
-    # Dataset
-    ## Signal
-    fileS_path = '../root-trees/signalNew_1_2.root'
-    ## Background
-    fileB_path = '../root-trees/background_1_2.root'
+
+    # Dataset Signal and Background
+    file1_path = './root-trees/sgn_bkg_simul.root'
 
     ############################### Preparing data ###############################
 
-    data_prep = dl.DataPreparation(fileS_path)
-    data_prep.load_data()
-    data_prep.prepare_data()
-
-    data_prep = dl.DataPreparation(fileB_path)
+    data_prep = dl.DataPreparation(file1_path)
     data_prep.load_data()
     data_prep.prepare_data()
 
@@ -77,5 +70,43 @@ if __name__ == "__main__":
                                    data_prep.y_test_cat1,
                                    data_prep.X_test_cat2,
                                    data_prep.y_test_cat2)
+
+############################### Print Results ###############################
+
+# Define the folder path
+folder1_path = "evaluation_results"
+
+# Define the full path of the output file
+output_file = os.path.join(folder1_path,
+                           model_type + ".txt")
+
+# It is necessary to create the output file required for the Metrics module
+with open(output_file, 'w') as f:
+    f.write("accuracy: {}\n".format(classifier.accuracy))   # Accuracy results
+    f.write("f1 score: {}\n".format(classifier.f1))         # f1_score results
+    f.write("precision: {}\n".format(classifier.precision)) # precision results
+    f.write("fpr\ttpr\n")                                   # Printing of TPR and FPR data for ROC plot.
+    for i in range(len(classifier.fpr)):
+        f.write("{}\t{}\n".format(classifier.fpr[i], classifier.tpr[i]))
+
+    ############################### Metrics display ###############################
     
-    
+    # Print Roc and Confusion Matrix
+    metrics_printer = mp.PrintMetrics(classifier.fpr,
+                                      classifier.tpr,
+                                      classifier.fpr_combined,
+                                      classifier.tpr_combined,
+                                      classifier.accuracy,
+                                      classifier.f1,
+                                      classifier.precision,
+                                      classifier.accuracy_combined,
+                                      classifier.f1_combined,
+                                      classifier.precision_combined,
+                                      data_prep.y_test,
+                                      classifier.y_test_combined,
+                                      classifier.predictions,
+                                      classifier.predictions_combined)
+    metrics_printer.plot_roc_curve()
+    metrics_printer.print_metrics()
+
+############################### End ###############################
