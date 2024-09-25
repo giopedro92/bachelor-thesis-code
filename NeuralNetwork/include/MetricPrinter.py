@@ -3,6 +3,8 @@ import seaborn           as sns
 
 from sklearn.metrics     import accuracy_score, roc_curve, roc_auc_score, f1_score, precision_score, confusion_matrix
 
+############################### CLASS to print metrics ###############################
+
 class PrintMetrics:
     def __init__(self,
                  fpr,
@@ -57,7 +59,7 @@ class PrintMetrics:
     def plot_roc_curve(self):
         # Calculate background rejection (1 - FPR)
         background_rejection          = 1 - self.fpr
-        background_rejection_combined = 1-self.fpr_combined
+        background_rejection_combined = 1 - self.fpr_combined
 
         # Plot signal efficiency vs background rejection
         plt.figure(figsize=(8, 6))
@@ -68,7 +70,7 @@ class PrintMetrics:
         plt.title('Signal Efficiency vs Background Rejection')
         plt.legend(loc="lower right")
         plt.grid(True)
-        #plt.savefig(f"plot_results/{available_options[choice]}_{event_number}_{width}x{height}.png") mettere che salva i plot
+        #plt.savefig(f"plot_results/{available_options[choice]}_{event_number}_{width}x{height}.png") # mettere che salva i plot
         plt.show()
 
     def print_metrics(self):

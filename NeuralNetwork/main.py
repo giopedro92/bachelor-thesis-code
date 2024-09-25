@@ -10,6 +10,7 @@ import include.MetricPrinter   as mp  # Module for printing metrics
 ############################### End import ###############################
 
 ############################### Start of code ###############################
+
 '''
 Checks whether the script is executed as a main program
 and checks whether the correct number of arguments has been supplied
@@ -21,6 +22,7 @@ If one wishes to execute this code independently,
 one should enter the following command into the terminal 
 (it is not necessary to call other modules).
 '''
+
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: python3 main.py <model_type>")

@@ -3,18 +3,21 @@
 ---
 - [Instructions to run the code](#instructions-to-run-the-code)
     - [Analysis](#analysis)
+        - [Docker](#docker)
+        - [Analysis](#analysis-1)
     - [Neural network](#neural-network)
-
+        - [Docker](#docker-1)
+        - [Neural Network](#neural-network-1)
 ---
 
 >Author: Giovanni Pedrelli
 
 ## Analysis
 ### Docker
-Build the `.dockerfile` to get a docker image
+Inside the directory where the `.dockerfile` is, build the `dockerfile` to get a docker image
 
 ```bash
-sudo docker build -f analysis.dockerfile .
+sudo docker build -f analysis.dockerfile -t analysis .
 ```
 
 See the images installed
@@ -22,10 +25,12 @@ See the images installed
 sudo docker images
 ```
 
+<!--
 Rename an image
 ```bash
 sudo docker tag <tag> <name>
 ```
+-->
 
 Run the docker image:
 - as `root`
@@ -36,7 +41,7 @@ Run the docker image:
     -v /home:/home \
     --rm \
     -it \
-    root-uproot bash
+    analysis bash
     ```
 
 - with `--user $(id -u)`
@@ -48,12 +53,12 @@ Run the docker image:
     --rm \
     -it \
     --user $(id -u) \
-    root-uproot bash
+    analysis bash
     ```
 
 
 ### Analysis
-Inside the docker container
+**Inside the docker container**
 
 Move to the right folder
 ```bash
@@ -67,4 +72,30 @@ python3 analysis.py
 
 
 ## Neural network
-Run the code to train the neural netrwork
+### Docker
+
+Inside the directory where the `.dockerfile` is, build the `.dockerfile` to get a docker image
+
+```bash
+sudo docker build -f neural-network.dockerfile -t neural-network .
+```
+
+See the images installed
+```bash
+sudo docker images
+```
+
+Run the docker image:
+```bash
+sudo docker run -v /home/giovanni-pedrelli/TESI/NeuralNetwork:/app --rm -it dockerfile
+```
+
+### Neural Network
+**Inside the docker container**
+
+Move to the right folder
+```bash
+cd /home/giovanni-pedrelli/TESI/
+```
+
+Run the code to train the Neural Netrwork

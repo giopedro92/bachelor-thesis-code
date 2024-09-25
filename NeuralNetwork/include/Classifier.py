@@ -11,7 +11,7 @@ from sklearn.metrics       import accuracy_score, roc_curve, roc_auc_score, f1_s
 from tensorflow            import keras
 from tensorflow.keras      import layers
 
-############################### Class for model definition, training and evaluation ###############################
+############################### CLASS for model definition, training and evaluation ###############################
 
 class SignalBackgroundClassifier:
     def __init__(self,
@@ -102,7 +102,6 @@ class SignalBackgroundClassifier:
         additional_evaluation = Additional_evaluation(self.clf, feature_names, model_type)
         additional_evaluation.plot_feature_importance(self.clf, X_train, y_train)
 
-
     ############################### Evaluating ###############################
     
     def evaluate_classifier(self,
@@ -164,7 +163,8 @@ class SignalBackgroundClassifier:
         print(classification_report(self.y_test_combined, self.predictions_combined))
 
 
-############################### NN Class ###############################
+
+############################### CLASS NN ###############################
 
 class NeuralNetwork:
     def __init__(self,
@@ -222,7 +222,9 @@ class NeuralNetwork:
         # Calculates the elapsed time for training
         self.training_time = time.time() - start_time
 
-############################### Additional tools class ###############################
+
+
+############################### CLASS Additional tools ###############################
 
 class Additional_evaluation:
     def __init__(self,

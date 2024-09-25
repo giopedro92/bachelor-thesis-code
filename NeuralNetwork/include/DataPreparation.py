@@ -5,7 +5,9 @@ import pandas                as pd
 from sklearn.model_selection import train_test_split
 
 class DataPreparation:
-    # INIT
+
+    ############################### INIT ###############################
+
     def __init__(self,
                  file1_path,
                  treeS_name = "treeSgn",
@@ -25,7 +27,8 @@ class DataPreparation:
         self.treeS_name = treeS_name
         self.treeB_name = treeB_name
 
-    # LOAD DATA
+    ############################### LOAD DATA ###############################
+
     def load_data(self): # Loading data
         file1 = uproot.open(self.file1_path)
         
@@ -37,7 +40,8 @@ class DataPreparation:
         self.df_signal     = TreeS_extract.arrays(library = "pd")
         self.df_background = TreeB_extract.arrays(library = "pd")
         
-    # PREPARE DATA
+    ############################### PREPARE DATA ###############################
+
     def prepare_data(self): # This function is designed to prepare data for the training and evaluation of a classification model.
         # Select features
         X_signal           = self.df_signal[['massK0S',
@@ -62,8 +66,7 @@ class DataPreparation:
                               'nSigmapr',
                               'dcaV0']
 
-        ####### Normalize signal data by dividing by the maximum value of each variable #######
-        
+        # Normalize SIGNAL data by dividing by the maximum value of each variable
         max_massK0S_signal     = X_signal['massK0S'].max()
         max_tImpParBach_signal = X_signal['tImpParBach'].max()
         max_tImpParV0_signal   = X_signal['tImpParV0'].max()
@@ -73,7 +76,6 @@ class DataPreparation:
         max_dcaV0_signal       = X_signal['dcaV0'].max()
 
         X_signal_normalized     = pd.DataFrame()
-        X_background_normalized = pd.DataFrame()
 
         X_signal_normalized['massK0S']     = X_signal['massK0S']     / max_massK0S_signal
         X_signal_normalized['tImpParBach'] = X_signal['tImpParBach'] / max_tImpParBach_signal
@@ -84,21 +86,31 @@ class DataPreparation:
         X_signal_normalized['dcaV0']       = X_signal['dcaV0']       / max_dcaV0_signal
 
         # ???????????????????????????? NOI ABBIAMO UNA VARIABILE COSÌ ?????????????????????????
-        # X_signal_normalized['eta']  = X_signal['eta'] # Noted that the data has not been normalised for the purpose of categorisation.
+        #X_signal_normalized['eta']  = X_signal['eta'] # Noted that the data has not been normalised for the purpose of categorisation.
 
-        # Normalizzazione dei dati per sfondo dividendo per il massimo
-        max_var1_background = X_background['var1'].max()
-        max_var2_background = X_background['var2'].max()
-        max_var3_background = X_background['var3'].max()
-        max_var4_background = X_background['var4'].max()
+        # Normalize BACKGROUND data by dividing by the maximum value of each variable
+        max_massK0S_background     = X_background['massK0S'].max()
+        max_tImpParBach_background = X_background['tImpParBach'].max()
+        max_tImpParV0_background   = X_background['tImpParV0'].max()
+        max_CtK0S_background       = X_background['CtK0S'].max()
+        max_cosPAK0S_background    = X_background['cosPAK0S'].max()
+        max_nSigmapr_background    = X_background['nSigmapr'].max()
+        max_dcaV0_background       = X_background['dcaV0'].max()
 
-        X_background_normalized['var1'] = X_background['var1'] / max_var1_background
-        X_background_normalized['var2'] = X_background['var2'] / max_var2_background
-        X_background_normalized['var3'] = X_background['var3'] / max_var3_background
-        X_background_normalized['var4'] = X_background['var4'] / max_var4_background
-        X_background_normalized['eta']  = X_background['eta'] # Noted that the data has not been normalised for the purpose of categorisation.
+        X_background_normalized = pd.DataFrame()
 
-        ####### End Normalisation #######
+        X_background_normalized['massK0S']     = X_background['massK0S']     / max_massK0S_background
+        X_background_normalized['tImpParBach'] = X_background['tImpParBach'] / max_tImpParBach_background
+        X_background_normalized['tImpParV0']   = X_background['tImpParV0']   / max_tImpParV0_background
+        X_background_normalized['CtK0S']       = X_background['CtK0S']       / max_CtK0S_background
+        X_background_normalized['cosPAK0S']    = X_background['cosPAK0S']    / max_cosPAK0S_background
+        X_background_normalized['nSigmapr']    = X_background['nSigmapr']    / max_nSigmapr_background
+        X_background_normalized['dcaV0']       = X_background['dcaV0']       / max_dcaV0_background
+
+        # ???????????????????????????? NOI ABBIAMO UNA VARIABILE COSÌ ?????????????????????????
+        #X_background_normalized['eta']  = X_background['eta'] # Noted that the data has not been normalised for the purpose of categorisation.
+
+        ############################### End Normalisation ###############################
         
         # Concatenate normalized DataFrames
         X = pd.concat([X_signal_normalized,
@@ -118,7 +130,7 @@ class DataPreparation:
                                        random_state=42)
 
 
-        ####### Definition of category #######
+        ############################### Definition of category ###############################
         
         # Separate data into two groups based on the absolute value of "eta" => categorisation
         self.X_train_cat1 = self.X_train[self.X_train['eta'].abs() > 1.3]
