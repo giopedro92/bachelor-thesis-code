@@ -92,7 +92,8 @@ class PrintMetrics:
         plt.title("Confusion Matrix (Full dataset)")
         plt.xlabel("Predicted values")
         plt.ylabel("True values")
-        plt.show()
+        #plt.show()
+        plt.savefig("evaluation_results/Confusion_Matrix.svg")
         
         # Confusion Matrix
         cm_combined = confusion_matrix(self.y_test_combined, self.predictions_combined)
@@ -103,4 +104,5 @@ class PrintMetrics:
         plt.title("Confusion Matrix (Categorisation)")
         plt.xlabel("Predicted values")
         plt.ylabel("True values")
-        plt.show()
+        #plt.show()
+        plt.savefig("evaluation_results/Confusion_Matrix_Combined.svg")

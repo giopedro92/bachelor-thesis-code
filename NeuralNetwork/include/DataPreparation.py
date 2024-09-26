@@ -107,9 +107,6 @@ class DataPreparation:
         X_background_normalized['nSigmapr']    = X_background['nSigmapr']    / max_nSigmapr_background
         X_background_normalized['dcaV0']       = X_background['dcaV0']       / max_dcaV0_background
 
-        # ???????????????????????????? NOI ABBIAMO UNA VARIABILE COSÌ ?????????????????????????
-        #X_background_normalized['eta']  = X_background['eta'] # Noted that the data has not been normalised for the purpose of categorisation.
-
         ############################### End Normalisation ###############################
         
         # Concatenate normalized DataFrames

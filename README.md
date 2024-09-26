@@ -71,6 +71,35 @@ python3 analysis.py
 ```
 
 
+## EDO Neural network
+### Docker
+
+Run the docker image:
+```bash
+sudo docker run \
+-e DISPLAY=$DISPLAY \
+-v /tmp/.X11-unix:/tmp/.X11-unix \
+-v /home/giovanni-pedrelli/TESI/NeuralNetwork:/app \
+--rm \
+-it \
+dockerfile
+```
+
+### Neural Network
+**Inside the docker container**
+
+```bash
+cd Python_Cat
+```
+
+```bash
+python3 main.py Neural_Network
+```
+
+
+
+
+
 ## Neural network
 ### Docker
 
@@ -87,7 +116,13 @@ sudo docker images
 
 Run the docker image:
 ```bash
-sudo docker run -v /home/giovanni-pedrelli/TESI/NeuralNetwork:/app --rm -it dockerfile
+sudo docker run \
+-e DISPLAY=$DISPLAY \
+-v /tmp/.X11-unix:/tmp/.X11-unix \
+-v /home/giovanni-pedrelli/TESI/NeuralNetwork:/app \
+--rm \
+-it \
+dockerfile
 ```
 
 ### Neural Network
@@ -95,7 +130,12 @@ sudo docker run -v /home/giovanni-pedrelli/TESI/NeuralNetwork:/app --rm -it dock
 
 Move to the right folder
 ```bash
-cd /home/giovanni-pedrelli/TESI/
+cd /home/giovanni-pedrelli/TESI/Neural_Network
 ```
 
 Run the code to train the Neural Netrwork
+```bash
+python3 main.py
+```
+
+...

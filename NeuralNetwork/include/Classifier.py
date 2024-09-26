@@ -186,23 +186,25 @@ class NeuralNetwork:
                                       learning_rate)
 
     ############################### Model definition ###############################
-    
+    # COSTRUZIONE DEL MODELLO
     def build_model(self,
                     X_train,
                     neurons,
                     drop_out,
                     learning_rate):
         model = keras.Sequential([
-            layers.Input(shape=(X_train.shape[1],)),
-            layers.Dense(neurons, activation='relu'),
-            layers.Dropout(drop_out),
+            layers.Input(shape=(X_train.shape[1],)), # layer di input, shape è dimensione dei dati
+            layers.Dense(neurons, activation='relu'), # layer collegati a tutti i neuroni
+            layers.Dropout(drop_out), # spegne un tot di neuroni per non influenzare troppo la rete
             layers.Dense(neurons, activation='relu'),
             layers.Dropout(drop_out),
             layers.Dense(1, activation='sigmoid')
         ])
-        optimizer = keras.optimizers.Adam(learning_rate=learning_rate)
+        
+        optimizer = keras.optimizers.Adam(learning_rate=learning_rate) # usa optimizer Adam
         
         model.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['accuracy'])
+        # loss function più adeguata per il problema
         return model
 
     ############################### Training of the model ###############################
@@ -213,6 +215,7 @@ class NeuralNetwork:
         # Start measuring time
         start_time = time.time()
 
+        # funzione fondamentale con cui viene allenato il modello model.fit
         self.history = self.model.fit(X_train,
                                       y_train,
                                       epochs=20,
@@ -296,7 +299,9 @@ class Additional_evaluation:
                 plt.xlabel('Feature Importance')
                 plt.ylabel('Features')
                 plt.title('Feature Importance for Neural Network')
-                plt.show()
+                #plt.show()
+                plt.savefig("evaluation_results/Neural_Network.svg")
+
             else:
                 print("Plotting feature importance is not supported for this type of classifier.")
         elif self.model_type == 'kNN':
