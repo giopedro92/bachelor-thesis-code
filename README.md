@@ -32,6 +32,13 @@ sudo docker tag <tag> <name>
 ```
 -->
 
+<!--
+Remove a docker image
+```bash
+sudo docker rmi <name>:<tag>
+```
+-->
+
 Run the docker image:
 - as `root`
     ```bash
@@ -71,6 +78,19 @@ python3 analysis.py
 ```
 
 
+## ROOT Trees
+Inspect inside a `.root` file. **Inside ROOT**
+
+```bash
+std::unique_ptr<TFile> myFile( TFile::Open("*_*filename*_*.root") );
+```
+
+```bash
+myFile->ls()
+```
+
+
+
 ## EDO Neural network
 ### Docker
 
@@ -79,10 +99,10 @@ Run the docker image:
 sudo docker run \
 -e DISPLAY=$DISPLAY \
 -v /tmp/.X11-unix:/tmp/.X11-unix \
--v /home/giovanni-pedrelli/TESI/NeuralNetwork:/app \
+-v /home/giovanni-pedrelli/SC-EXAM/:/app \
 --rm \
 -it \
-dockerfile
+neural-network bash
 ```
 
 ### Neural Network
@@ -122,20 +142,15 @@ sudo docker run \
 -v /home/giovanni-pedrelli/TESI/NeuralNetwork:/app \
 --rm \
 -it \
-dockerfile
+neural-network bash
 ```
 
 ### Neural Network
 **Inside the docker container**
 
-Move to the right folder
-```bash
-cd /home/giovanni-pedrelli/TESI/Neural_Network
-```
-
 Run the code to train the Neural Netrwork
 ```bash
-python3 main.py
+python3 main.py Neural_Network
 ```
 
 ...
