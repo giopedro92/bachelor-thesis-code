@@ -1,0 +1,119 @@
+%-------------------------------------FONT
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{newlfont} % per frontespizio
+%\usepackage{mathpazo} % font ArsClassica
+
+%-------------------------------------MATEMATICA
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[output-decimal-marker={.}]{siunitx}
+% siunitx: numeri con unità di misura
+% output-decimal-marker={,}: le convenzioni tipografiche italiane prevedono la virgola e non il punto
+
+%-------------------------------------LINGUE
+\usepackage[english,
+            italian]{babel}
+\usepackage[autostyle,
+            italian=guillemets]{csquotes} % per virgolette corrette
+% autostyle adatta lo stile delle citazioni alla lingua corrente del documento
+% italian=guillemets racchiude automaticamente tra virgolette caporali i campi che prevedono le virgolette
+
+
+%-------------------------------------IMMAGINI
+\usepackage{graphicx}
+% serve per includere immagini e grafici
+\graphicspath{{res/fig/}}
+% importa la cartella res/fig/ come cartella da cui caricare le immagini
+
+\usepackage[inkscapelatex=false]{svg}
+% permette di caricare immagini svg
+
+% \usepackage{flafter}
+% impedisce alle figure di apparire prima della loro definizione nel testo
+
+%\usepackage{float}
+% permette di forzare il posizionamento dell’oggetto nel punto in cui è situato con l’opzione H
+
+%-------------------------------------BORDI
+\usepackage{geometry} % permette la modifica della gabbia del documento
+\geometry{
+  a4paper, % formato di pagina
+  heightrounded, % modifica di poco le dimensioni della gabbia per contenere un numero intero di righe
+  hmargin=2.6cm, % dimensioni margini destro-sinistro
+  %vmargin=2.5cm % dimensioni margini superiore-inferiore
+}
+
+%\usepackage{layaureo}
+% Pacchetto layaureo per la formattazione italiana
+
+%-------------------------------------RIFERIMENTI
+\usepackage{hyperref}
+
+%ANTO
+%\usepackage[colorlinks=true,
+ %   linkcolor=black,
+  %  urlcolor=teal,
+   % citecolor=black]{hyperref}
+
+%\hypersetup{
+ %   colorlinks=true,
+  %  linkcolor=black,
+   % filecolor=magenta,      
+    %urlcolor=cyan,
+    %pdftitle={Overleaf Example},
+    %pdfpagemode=FullScreen,
+%}
+
+%-------------------------------------BIBLIOGRAFIA
+\usepackage[backend=biber,
+            bibstyle=numeric,
+            citestyle=numeric,
+            backref,
+            hyperref]{biblatex}
+% Biber come motore bibliografico, è nuovo e da preferire a BibTex
+% backref: indica accanto a ciascun riferimento le pagine del documento in cui è citato
+\addbibresource{biblio.bib}
+
+%-------------------------------------ALTRI
+%\usepackage{setspace} % serve a fornire comandi di interlinea standard
+%\onehalfspacing{} % imposta interlinea a 1,5 ed equivale a \linespread{1,5}
+
+\usepackage{xcolor} % colori frontespizio in bozza
+
+%\usepackage[a-1b]{pdfx} % conformità pdf generato
+
+%\usepackage{lineno}
+%\linenumbers
+
+\usepackage{comment}
+
+\usepackage{fancyhdr}
+% per intestazioni e più di pagina (fancy header)
+
+\newcommand{\fncyfront}{%
+    \fancyhead[RO]{{\footnotesize\rightmark}}
+    \fancyfoot[RO]{\thepage}
+    \fancyhead[LE]{\footnotesize{\leftmark}}
+    \fancyfoot[LE]{\thepage}
+    \fancyhead[RE,LO]{}
+    \fancyfoot[C]{}
+    \renewcommand{\headrulewidth}{0.3pt}}
+\newcommand{\fncymain}{%
+    \fancyhead[RO]{{\footnotesize\rightmark}}
+    \fancyfoot[RO]{\thepage}
+    \fancyhead[LE]{{\footnotesize\leftmark}}
+    \fancyfoot[LE]{\thepage}
+    \fancyfoot[C]{}
+    \renewcommand{\headrulewidth}{0.3pt}}
+
+\newenvironment{abstract}
+% definizione ambiente abstract ispirato ad article non presente in book
+  {%\cleardoublepage% togliere primo % se non si vuole sommario come un chapter
+    \thispagestyle{empty}%
+    \null \vfill\begin{center}%
+      \chapter*{\abstractname} \end{center}}%
+  {\vfill\null}
+
+%-------------------------------------Definizioni di comandi e ambienti

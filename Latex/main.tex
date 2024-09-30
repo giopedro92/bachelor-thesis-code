@@ -1,0 +1,77 @@
+\documentclass[a4paper,
+               12pt,
+               twoside,
+               openright,
+               onecolumn,
+               final,
+               titlepage]{book}
+% twoside:   (oneside|twoside) documento a singola o doppia facciata
+% openright: (openany|openright) fa cominciare un capitolo nella successiva pagina a disposizione o sempre in una pagina destra
+% titlepage: (titlepage|notitlepage) se dopo il titolo del documento debba avere  inizio  una  nuova  pagina
+% final:     (draft|final) scelta tra bozza o finale, influenza il comportamento degli altri pacchetti
+
+%-------------------------------------PACKAGES
+\input{packages.tex}
+
+%-------------------------------------DOC INFO
+\title{Titolo}
+\author{Giovanni Pedrelli}
+\date{\today}
+
+%-------------------------------------DOCUMENT
+\begin{document}
+    %---------------------------------FRONTMATTER
+    \pagestyle{fancy}
+    \fncyfront  
+    \frontmatter{}
+    % pulisce la pagina
+    % numero pagina romano
+    % no numerazione capitoli
+    % fa ricominciare il numero di pagina da 1
+        %\pagenumbering{Roman}
+        \pagestyle{empty}
+        %-----------------------------FRONTESPIZIO
+        \input{src/1-frontmatter/frontespizio}
+        %\input{src/1-frontmatter/keywords}
+        %-----------------------------DEDICA
+        \input{src/1-frontmatter/dedica}
+        %-----------------------------ABSTRACT
+        \input{src/1-frontmatter/abstract}
+    %---------------------------------INDICE
+    \tableofcontents
+    %\listoffigures % elenco delle figure
+    %\listoftables % elenco delle tabelle
+
+
+    %---------------------------------MAINMATTER
+    \fncymain
+    \mainmatter
+    \mainmatter{}
+    % pulisce la pagina
+    % numero pagina arabo
+    % sì numerazione capitoli
+    % fa ricominciare il numero di pagina da 1
+        %\pagenumbering{arabic}
+        \pagestyle{headings}
+        %-----------------------------INTRODUZIONE
+        %\input{src/2-mainmatter/0-introduzione}
+        %-----------------------------CAPITOLO 1
+        \input{src/2-mainmatter/1-cap1}
+        %-----------------------------CAPITOLO 2
+        \input{src/2-mainmatter/2-cap2}
+        %-----------------------------CAPITOLO 3
+        \input{src/2-mainmatter/3-cap3}
+        %-----------------------------APPENDICE
+        %\appendix
+
+
+    %---------------------------------BACKMATTER
+    \backmatter{}
+    % pulisce la pagina
+    % numero pagina immutato
+    % no numerazione capitoli
+        %-----------------------------BIBLIOGRAFIA
+        \input{src/3-backmatter/bibliografia}
+        %-----------------------------RINGRAZIAMENTI
+        %\input{src/3-backmatter/ringraziamenti}
+\end{document}
