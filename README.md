@@ -3,17 +3,25 @@
 ---
 - [Instructions to run the code](#instructions-to-run-the-code)
     - [Analysis](#analysis)
-        - [Docker](#docker)
-        - [Analysis](#analysis-1)
+        - [Docker Analysis](#docker-analysis)
+        - [Run Analysis](#run-analysis)
+    - [EDO Neural network](#edo-neural-network)
+        - [Docker EDO](#docker-edo)
+        - [Run Neural Network EDO](#neural-network-edo)
     - [Neural network](#neural-network)
-        - [Docker](#docker-1)
-        - [Neural Network](#neural-network-1)
+        - [Training](#training)
+            - [Docker Neural Network](#docker-neural-network)
+            - [Train Neural Network](#train-neural-network)
+        - [Real data](#real-data)
+    - [Appendice](#appendice)
+        - [Root Trees](#root-trees)
 ---
 
 >Author: Giovanni Pedrelli
 
+
 ## Analysis
-### Docker
+### Docker Analysis
 Inside the directory where the `.dockerfile` is, build the `dockerfile` to get a docker image
 
 ```bash
@@ -40,6 +48,7 @@ sudo docker rmi <name>:<tag>
 -->
 
 Run the docker image:
+<!--
 - as `root`
     ```bash
     sudo docker run \
@@ -50,6 +59,7 @@ Run the docker image:
     -it \
     analysis bash
     ```
+-->
 
 - with `--user $(id -u)`
     ```bash
@@ -64,7 +74,7 @@ Run the docker image:
     ```
 
 
-### Analysis
+### Run Analysis
 **Inside the docker container**
 
 Move to the right folder
@@ -78,21 +88,12 @@ python3 analysis.py
 ```
 
 
-## ROOT Trees
-Inspect inside a `.root` file. **Inside ROOT**
 
-```bash
-std::unique_ptr<TFile> myFile( TFile::Open("*_*filename*_*.root") );
-```
-
-```bash
-myFile->ls()
-```
 
 
 
 ## EDO Neural network
-### Docker
+### Docker EDO
 
 Run the docker image:
 ```bash
@@ -105,7 +106,7 @@ sudo docker run \
 neural-network bash
 ```
 
-### Neural Network
+### Neural Network EDO
 **Inside the docker container**
 
 ```bash
@@ -121,7 +122,8 @@ python3 main.py Neural_Network
 
 
 ## Neural network
-### Docker
+### Training
+#### Docker Neural Network
 
 Inside the directory where the `.dockerfile` is, build the `.dockerfile` to get a docker image
 
@@ -145,7 +147,7 @@ sudo docker run \
 neural-network bash
 ```
 
-### Neural Network
+#### Train Neural Network
 **Inside the docker container**
 
 Run the code to train the Neural Netrwork
@@ -153,4 +155,21 @@ Run the code to train the Neural Netrwork
 python3 main.py Neural_Network
 ```
 
+
+### Real data
+
 ...
+
+
+
+## Appendice
+### ROOT Trees
+Inspect inside a `.root` file. **Inside ROOT**
+
+```bash
+std::unique_ptr<TFile> myFile( TFile::Open("*_*filename*_*.root") );
+```
+
+```bash
+myFile->ls()
+```
