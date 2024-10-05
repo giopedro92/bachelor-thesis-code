@@ -2,24 +2,45 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{newlfont} % per frontespizio
-%\usepackage{mathpazo} % font ArsClassica
+
+%-------------------------------------BORDI
+\usepackage{geometry} % permette la modifica della gabbia del documento
+\geometry{
+    paper=a4paper, % formato di pagina
+    heightrounded, % modifica di poco le dimensioni della gabbia per contenere un numero intero di righe
+    hmargin=2.6cm, % dimensioni margini destro-sinistro
+    %vmargin=2.5cm, % dimensioni margini superiore-inferiore
+    %inner=2.5cm, % margine interno
+    %outer=3cm, % margine esterno
+    %top= cm % margine superiore
+    %bottom=5cm % margine inferiore
+    %bindingoffset=0.5cm, % offset rilegatura
+    %showframe, % Uncomment to show how the type block is set on the page
+}
+
+%\usepackage{layaureo}
+% Pacchetto layaureo per la formattazione italiana
 
 %-------------------------------------MATEMATICA
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
+\usepackage{xfrac} % nice inline one character fractions
 \usepackage[output-decimal-marker={.}]{siunitx}
 % siunitx: numeri con unità di misura
 % output-decimal-marker={,}: le convenzioni tipografiche italiane prevedono la virgola e non il punto
+\AtBeginDocument{\RenewCommandCopy\qty\SI}
+% per usare qty di siunitx e non avere conflitti con physics
+\usepackage{physics}
 
 %-------------------------------------LINGUE
 \usepackage[english,
             italian]{babel}
 \usepackage[autostyle,
-            italian=guillemets]{csquotes} % per virgolette corrette
+            italian=guillemets]{csquotes}
+% per virgolette corrette
 % autostyle adatta lo stile delle citazioni alla lingua corrente del documento
 % italian=guillemets racchiude automaticamente tra virgolette caporali i campi che prevedono le virgolette
-
 
 %-------------------------------------IMMAGINI
 \usepackage{graphicx}
@@ -29,24 +50,13 @@
 
 \usepackage[inkscapelatex=false]{svg}
 % permette di caricare immagini svg
+\svgpath{{res/fig/}} % cartella .svg
 
 % \usepackage{flafter}
 % impedisce alle figure di apparire prima della loro definizione nel testo
 
 %\usepackage{float}
 % permette di forzare il posizionamento dell’oggetto nel punto in cui è situato con l’opzione H
-
-%-------------------------------------BORDI
-\usepackage{geometry} % permette la modifica della gabbia del documento
-\geometry{
-  a4paper, % formato di pagina
-  heightrounded, % modifica di poco le dimensioni della gabbia per contenere un numero intero di righe
-  hmargin=2.6cm, % dimensioni margini destro-sinistro
-  %vmargin=2.5cm % dimensioni margini superiore-inferiore
-}
-
-%\usepackage{layaureo}
-% Pacchetto layaureo per la formattazione italiana
 
 %-------------------------------------RIFERIMENTI
 \usepackage{hyperref}
@@ -70,9 +80,12 @@
 \usepackage[backend=biber,
             bibstyle=numeric,
             citestyle=numeric,
+            style=numeric,
+            sorting=none,
             backref,
             hyperref]{biblatex}
 % Biber come motore bibliografico, è nuovo e da preferire a BibTex
+% sorting=none: elenco delle citazioni nella bibliografia=nell'ordine in cui vengono citate nel testo
 % backref: indica accanto a ciascun riferimento le pagine del documento in cui è citato
 \addbibresource{biblio.bib}
 
@@ -80,17 +93,21 @@
 %\usepackage{setspace} % serve a fornire comandi di interlinea standard
 %\onehalfspacing{} % imposta interlinea a 1,5 ed equivale a \linespread{1,5}
 
-\usepackage{xcolor} % colori frontespizio in bozza
+%\usepackage{xcolor} % colori frontespizio in bozza
 
 %\usepackage[a-1b]{pdfx} % conformità pdf generato
 
-%\usepackage{lineno}
+%\usepackage{lineno} % per numerare le linee di testo
 %\linenumbers
 
 \usepackage{comment}
 
+%-------------------------------------LISTATI CODICE
+
+%-------------------------------------Definizioni di comandi e ambienti
+
 \usepackage{fancyhdr}
-% per intestazioni e più di pagina (fancy header)
+% per intestazioni e piè di pagina (fancy header)
 
 \newcommand{\fncyfront}{%
     \fancyhead[RO]{{\footnotesize\rightmark}}
@@ -109,11 +126,9 @@
     \renewcommand{\headrulewidth}{0.3pt}}
 
 \newenvironment{abstract}
-% definizione ambiente abstract ispirato ad article non presente in book
+% definizione ambiente abstract ispirato ad article, non presente in book
   {%\cleardoublepage% togliere primo % se non si vuole sommario come un chapter
     \thispagestyle{empty}%
     \null \vfill\begin{center}%
       \chapter*{\abstractname} \end{center}}%
   {\vfill\null}
-
-%-------------------------------------Definizioni di comandi e ambienti
