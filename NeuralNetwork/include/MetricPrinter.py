@@ -10,26 +10,26 @@ from sklearn.metrics import (
     confusion_matrix,
 )
 
-############################### CLASS to print metrics ###############################
 
+############################### CLASS to print metrics ###############################
 
 class PrintMetrics:
     def __init__(
         self,
         fpr,
         tpr,
-        fpr_combined,
-        tpr_combined,
+        # fpr_combined,
+        # tpr_combined,
         accuracy,
         f1,
         precision,
-        accuracy_combined,
-        f1_combined,
-        precision_combined,
+        # accuracy_combined,
+        # f1_combined,
+        # precision_combined,
         y_test,
-        y_test_combined,
+        # y_test_combined,
         predictions,
-        predictions_combined,
+        # predictions_combined,
     ):
         """
         Constructor to initialize PrintMetrics object with metrics values and visualize confusion matrix.
@@ -52,43 +52,44 @@ class PrintMetrics:
 
         self.fpr = fpr
         self.tpr = tpr
-        self.fpr_combined = fpr_combined
-        self.tpr_combined = tpr_combined
+        # self.fpr_combined = fpr_combined
+        # self.tpr_combined = tpr_combined
         self.accuracy = accuracy
         self.f1 = f1
         self.precision = precision
-        self.accuracy_combined = accuracy_combined
-        self.f1_combined = f1_combined
-        self.precision_combined = precision_combined
+        # self.accuracy_combined = accuracy_combined
+        # self.f1_combined = f1_combined
+        # self.precision_combined = precision_combined
         self.y_test = y_test
-        self.y_test_combined = y_test_combined
+        # self.y_test_combined = y_test_combined
         self.predictions = predictions
-        self.predictions_combined = predictions_combined
+        # self.predictions_combined = predictions_combined
 
     def plot_roc_curve(self):
         # Calculate background rejection (1 - FPR)
         background_rejection = 1 - self.fpr
-        background_rejection_combined = 1 - self.fpr_combined
+        # background_rejection_combined = 1 - self.fpr_combined
 
         # Plot signal efficiency vs background rejection
         plt.figure(figsize=(8, 6))
         plt.plot(
             self.tpr, background_rejection, color="blue", lw=2, label="Full dataset"
         )
-        plt.plot(
-            self.tpr_combined,
-            background_rejection_combined,
-            color="red",
-            lw=2,
-            label="Combined dataset",
-        )
+        # plt.plot(
+        #     self.tpr_combined,
+        #     background_rejection_combined,
+        #     color="red",
+        #     lw=2,
+        #     label="Combined dataset",
+        # )
         plt.xlabel("Signal Efficiency (True Positive Rate)")
         plt.ylabel("Background Rejection")
         plt.title("Signal Efficiency vs Background Rejection")
         plt.legend(loc="lower right")
         plt.grid(True)
         # plt.savefig(f"plot_results/{available_options[choice]}_{event_number}_{width}x{height}.png") # mettere che salva i plot
-        plt.show()
+        plt.savefig("evaluation_results/roc_curve.svg")
+        #plt.show()
 
     def print_metrics(self):
         # Print metrics
@@ -96,9 +97,9 @@ class PrintMetrics:
         print("F1 Score:", self.f1)
         print("Precision:", self.precision)
 
-        print("Accuracy Combined:", self.accuracy_combined)
-        print("F1 Score Combined:", self.f1_combined)
-        print("Precision Combined:", self.precision_combined)
+        # print("Accuracy Combined:", self.accuracy_combined)
+        # print("F1 Score Combined:", self.f1_combined)
+        # print("Precision Combined:", self.precision_combined)
 
         # Confusion Matrix
         cm = confusion_matrix(self.y_test, self.predictions)
@@ -110,16 +111,16 @@ class PrintMetrics:
         plt.xlabel("Predicted values")
         plt.ylabel("True values")
         # plt.show()
-        plt.savefig("evaluation_results/Confusion_Matrix.svg")
+        plt.savefig("evaluation_results/confusion_matrix.svg")
 
         # Confusion Matrix
-        cm_combined = confusion_matrix(self.y_test_combined, self.predictions_combined)
+        # cm_combined = confusion_matrix(self.y_test_combined, self.predictions_combined)
 
         # Visualize Confusion Matrix
-        plt.figure(figsize=(8, 6))
-        sns.heatmap(cm_combined, annot=True, fmt="d", cmap="Blues")
-        plt.title("Confusion Matrix (Categorisation)")
-        plt.xlabel("Predicted values")
-        plt.ylabel("True values")
-        # plt.show()
-        plt.savefig("evaluation_results/Confusion_Matrix_Combined.svg")
+        # plt.figure(figsize=(8, 6))
+        # sns.heatmap(cm_combined, annot=True, fmt="d", cmap="Blues")
+        # plt.title("Confusion Matrix (Categorisation)")
+        # plt.xlabel("Predicted values")
+        # plt.ylabel("True values")
+        # # plt.show()
+        # plt.savefig("evaluation_results/confusion_matrix_combined.svg")

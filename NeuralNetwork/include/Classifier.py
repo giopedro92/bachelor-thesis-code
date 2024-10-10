@@ -18,10 +18,13 @@ from sklearn.metrics import (
 from tensorflow import keras
 from tensorflow.keras import layers
 
+
 ############################### CLASS for model definition, training and evaluation ###############################
 
-
 class SignalBackgroundClassifier:
+
+    ############################### DATA PREPARATION ###############################
+
     def __init__(
         self,
         model_type="Neural_Network",
@@ -55,14 +58,17 @@ class SignalBackgroundClassifier:
             self.clf_cat2 = GradientBoostingClassifier(
                 n_estimators=100, learning_rate=0.15, max_depth=3, random_state=42
             )
+        
         elif model_type == "SVT":
             self.clf = SVC(kernel="linear", probability=True)
             self.clf_cat1 = SVC(kernel="linear", probability=True)
             self.clf_cat2 = SVC(kernel="linear", probability=True)
+        
         elif model_type == "Neural_Network":
             self.clf = NeuralNetwork(X_train, 32, 0.2, 0.01)
-            self.clf_cat1 = NeuralNetwork(X_train_cat1, 64, 0.3, 0.001)
-            self.clf_cat2 = NeuralNetwork(X_train_cat2, 32, 0.2, 0.01)
+            # self.clf_cat1 = NeuralNetwork(X_train_cat1, 64, 0.3, 0.001)
+            # self.clf_cat2 = NeuralNetwork(X_train_cat2, 32, 0.2, 0.01)
+        
         elif model_type == "Random_Forest":
             self.clf = RandomForestClassifier(
                 n_estimators=75, max_depth=8, min_samples_split=2, random_state=42
@@ -73,6 +79,7 @@ class SignalBackgroundClassifier:
             self.clf_cat2 = RandomForestClassifier(
                 n_estimators=75, max_depth=8, min_samples_split=2, random_state=42
             )
+        
         elif model_type == "kNN":
             self.clf = KNeighborsClassifier(
                 n_neighbors=75, metric="euclidean", weights="uniform"
@@ -83,6 +90,7 @@ class SignalBackgroundClassifier:
             self.clf_cat2 = KNeighborsClassifier(
                 n_neighbors=75, metric="euclidean", weights="distance"
             )
+        
         else:
             raise ValueError("Invalid model type.")
 
@@ -92,10 +100,10 @@ class SignalBackgroundClassifier:
         self,
         X_train,
         y_train,
-        X_train_cat1,
-        y_train_cat1,
-        X_train_cat2,
-        y_train_cat2,
+        # X_train_cat1,
+        # y_train_cat1,
+        # X_train_cat2,
+        # y_train_cat2,
         feature_names,
         model_type,
     ):  # Training function
@@ -103,8 +111,8 @@ class SignalBackgroundClassifier:
         # Train the classifier NN, noting the call to the class NeuralNetwork
         # and the function contained therein, namely build_model
         if isinstance(self.clf, NeuralNetwork):
-            self.clf_cat1.build_model(X_train_cat1, 64, 0.3, 0.01)
-            self.clf_cat2.build_model(X_train_cat2, 64, 0.3, 0.01)
+            # self.clf_cat1.build_model(X_train_cat1, 64, 0.3, 0.01)
+            # self.clf_cat2.build_model(X_train_cat2, 64, 0.3, 0.01)
             self.clf.build_model(X_train, 64, 0.3, 0.01)
 
             # Start measuring training time
@@ -113,8 +121,8 @@ class SignalBackgroundClassifier:
             # Calculate training time
             self.training_time = time.time() - start_time
 
-            self.clf_cat1.train_classifier(X_train_cat1, y_train_cat1)
-            self.clf_cat2.train_classifier(X_train_cat2, y_train_cat2)
+            # self.clf_cat1.train_classifier(X_train_cat1, y_train_cat1)
+            # self.clf_cat2.train_classifier(X_train_cat2, y_train_cat2) ########### ERRORE QUI
 
         else:  # Train the other classifier
             # Start measuring training time
@@ -123,8 +131,8 @@ class SignalBackgroundClassifier:
             # Calculate training time
             self.training_time = time.time() - start_time
 
-            self.clf_cat1.fit(X_train_cat1, y_train_cat1)
-            self.clf_cat2.fit(X_train_cat2, y_train_cat2)
+            # self.clf_cat1.fit(X_train_cat1, y_train_cat1)
+            # self.clf_cat2.fit(X_train_cat2, y_train_cat2)
 
         # Create an instance of the Additional_evaluation class
         # and then call the methods associated with it.
@@ -136,50 +144,56 @@ class SignalBackgroundClassifier:
     ############################### Evaluating ###############################
 
     def evaluate_classifier(
-        self, X_test, y_test, X_test_cat1, y_test_cat1, X_test_cat2, y_test_cat2
+        self,
+        X_test,
+        y_test,
+        # X_test_cat1,
+        # y_test_cat1,
+        # X_test_cat2,
+        # y_test_cat2,
     ):
 
         # Formulate predictions for NN.
         if isinstance(self.clf, NeuralNetwork):
             probability = self.clf.model.predict(X_test)
-            probability_cat1 = self.clf_cat1.model.predict(X_test_cat1)
-            probability_cat2 = self.clf_cat2.model.predict(X_test_cat2)
+            # probability_cat1 = self.clf_cat1.model.predict(X_test_cat1)
+            # probability_cat2 = self.clf_cat2.model.predict(X_test_cat2)
 
         else:  # Formulate predictions for the performance of other classifiers.
             probability = self.clf.predict_proba(X_test)[:, 1]
-            probability_cat1 = self.clf_cat1.predict_proba(X_test_cat1)[:, 1]
-            probability_cat2 = self.clf_cat2.predict_proba(X_test_cat2)[:, 1]
+            # probability_cat1 = self.clf_cat1.predict_proba(X_test_cat1)[:, 1]
+            # probability_cat2 = self.clf_cat2.predict_proba(X_test_cat2)[:, 1]
 
         # Calculate predicted probabilities for the positive class for the two cases
         if isinstance(self.clf, NeuralNetwork):
             self.predictions = (probability > 0.5).astype(int)
-            predictions_cat1 = (probability_cat1 > 0.5).astype(int)
-            predictions_cat2 = (probability_cat2 > 0.5).astype(int)
+            # predictions_cat1 = (probability_cat1 > 0.5).astype(int)
+            # predictions_cat2 = (probability_cat2 > 0.5).astype(int)
         else:
             self.predictions = self.clf.predict(X_test)
-            predictions_cat1 = self.clf_cat1.predict(X_test_cat1)
-            predictions_cat2 = self.clf_cat2.predict(X_test_cat2)
+            # predictions_cat1 = self.clf_cat1.predict(X_test_cat1)
+            # predictions_cat2 = self.clf_cat2.predict(X_test_cat2)
 
-        # Combine predictions and predicted probabilities for both categories
-        self.predictions_combined = np.concatenate(
-            [predictions_cat1, predictions_cat2]
-        )  # Needed for Confusion Matrix
-        probability_combined = np.concatenate([probability_cat1, probability_cat2])
-        self.y_test_combined = np.concatenate(
-            [y_test_cat1, y_test_cat2]
-        )  # Needed for Confusion Matrix
+        # # Combine predictions and predicted probabilities for both categories
+        # self.predictions_combined = np.concatenate(
+        #     [predictions_cat1, predictions_cat2]
+        # )  # Needed for Confusion Matrix
+        # probability_combined = np.concatenate([probability_cat1, probability_cat2])
+        # self.y_test_combined = np.concatenate(
+        #     [y_test_cat1, y_test_cat2]
+        # )  # Needed for Confusion Matrix
 
         # Calculate ROC curve
         self.fpr, self.tpr, self.thresholds = roc_curve(y_test, probability)
         self.roc_auc = roc_auc_score(y_test, probability)
 
-        # ROC curve is to be calculated by combining two categories.
-        self.fpr_combined, self.tpr_combined, _ = roc_curve(
-            self.y_test_combined, probability_combined
-        )
-        self.roc_auc_combined = roc_auc_score(
-            self.y_test_combined, probability_combined
-        )
+        # # ROC curve is to be calculated by combining two categories.
+        # self.fpr_combined, self.tpr_combined, _ = roc_curve(
+        #     self.y_test_combined, probability_combined
+        # )
+        # self.roc_auc_combined = roc_auc_score(
+        #     self.y_test_combined, probability_combined
+        # )
 
         # Calculate model accuracy, f1_score, precision
         # Full dataset
@@ -187,23 +201,22 @@ class SignalBackgroundClassifier:
         self.f1 = f1_score(y_test, self.predictions)
         self.precision = precision_score(y_test, self.predictions)
 
-        # Categorisation
-        self.accuracy_combined = accuracy_score(
-            self.y_test_combined, self.predictions_combined
-        )
-        self.f1_combined = f1_score(self.y_test_combined, self.predictions_combined)
-        self.precision_combined = precision_score(
-            self.y_test_combined, self.predictions_combined
-        )
+        # # Categorisation
+        # self.accuracy_combined = accuracy_score(
+        #     self.y_test_combined, self.predictions_combined
+        # )
+        # self.f1_combined = f1_score(self.y_test_combined, self.predictions_combined)
+        # self.precision_combined = precision_score(
+        #     self.y_test_combined, self.predictions_combined
+        # )
 
         print("Full dataset :")
         print(classification_report(y_test, self.predictions))
-        print("Categorisation :")
-        print(classification_report(self.y_test_combined, self.predictions_combined))
+        # print("Categorisation :")
+        # print(classification_report(self.y_test_combined, self.predictions_combined))
 
 
 ############################### CLASS NN ###############################
-
 
 class NeuralNetwork:
     def __init__(self, X_train, neurons, drop_out, learning_rate):
@@ -254,15 +267,19 @@ class NeuralNetwork:
 
         # funzione fondamentale con cui viene allenato il modello model.fit
         self.history = self.model.fit(
-            X_train, y_train, epochs=20, batch_size=32, validation_split=0.2
+            X_train,
+            y_train,
+            epochs=1,
+            batch_size=32,
+            validation_split=0.2,
         )
+        # DIVIDE TRAIN TRA TRAIN E VALIDATION validation_split=0.2
 
         # Calculates the elapsed time for training
         self.training_time = time.time() - start_time
 
 
 ############################### CLASS Additional tools ###############################
-
 
 class Additional_evaluation:
     def __init__(self, clf, feature_names, model_type):
@@ -282,7 +299,7 @@ class Additional_evaluation:
         """
         - barh: Draws a horizontal bar graph of the importance features, with the features on the y-axis and the importance on the bars.
         - Label the bars with the feature names
-        - Label the x-axis as ‘Importance’.
+        - Label the x-axis as 'Importance'.
         """
         if self.model_type in ["BDT", "Random_Forest"]:
             if hasattr(self.clf, "feature_importances_"):
@@ -339,7 +356,7 @@ class Additional_evaluation:
                 plt.ylabel("Features")
                 plt.title("Feature Importance for Neural Network")
                 # plt.show()
-                plt.savefig("evaluation_results/Neural_Network.svg")
+                plt.savefig("evaluation_results/feature_importance_Neural_Network.svg")
 
             else:
                 print(

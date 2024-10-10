@@ -3,10 +3,10 @@ print("--------------------START IMPORT--------------------")
 
 import os
 import sys
-import numpy as np
+import numpy                   as np
 import include.DataPreparation as dl  # Module for loading data
-import include.Classifier as clf  # Module for defining classifiers
-import include.MetricPrinter as mp  # Module for printing metrics
+import include.Classifier      as clf # Module for defining classifiers
+import include.MetricPrinter   as mp  # Module for printing metrics
 
 ############################### End import ###############################
 
@@ -50,6 +50,9 @@ if __name__ == "__main__":
     print("----------------------------------------prepare_data--------------------")
     data_prep.prepare_data()
 
+    print("X_TRAIN:\n", data_prep.X_train)
+    print("PRIMI 100:\n", data_prep.X_train[:100])
+
     ############################### Model Definition ###############################
     print("--------------------MODEL DEFINITION--------------------")
 
@@ -60,7 +63,6 @@ if __name__ == "__main__":
             X_train_cat1=data_prep.X_train_cat1,
             X_train_cat2=data_prep.X_train_cat2,
         )
-
     else:
         print("The model in question is not supported.")
         sys.exit(1)
@@ -68,24 +70,29 @@ if __name__ == "__main__":
     ############################### Training & Evaluation ###############################
     print("--------------------TRAINING & EVALUATION--------------------")
 
+    # Proviamo a estrarre le singole variabili dal tree e allenare la rete su ciascuna
+
+    print("----------------------------------------train_classifier--------------------")
     classifier.train_classifier(
-        data_prep.X_train,
-        data_prep.y_train,
-        data_prep.X_train_cat1,
-        data_prep.y_train_cat1,
-        data_prep.X_train_cat2,
-        data_prep.y_train_cat2,
+        data_prep.X_train[:100],
+        data_prep.y_train[:100],
+        #data_prep.X_train_cat1[:100],
+        #data_prep.y_train_cat1[:100],
+        #data_prep.X_train_cat2[:100],
+        #data_prep.y_train_cat2[:100],
         data_prep.feature_names,
         model_type,
-    )
+    ) ########### ERRORE QUI
     print("Training time ({}):".format(model_type), classifier.training_time)
+    
+    print("----------------------------------------evaluate_classifier--------------------")
     classifier.evaluate_classifier(
         data_prep.X_test,
         data_prep.y_test,
-        data_prep.X_test_cat1,
-        data_prep.y_test_cat1,
-        data_prep.X_test_cat2,
-        data_prep.y_test_cat2,
+        # data_prep.X_test_cat1,
+        # data_prep.y_test_cat1,
+        # data_prep.X_test_cat2,
+        # data_prep.y_test_cat2,
     )
 
 ############################### Print Results ###############################
@@ -113,19 +120,19 @@ with open(output_file, "w") as f:
     metrics_printer = mp.PrintMetrics(
         classifier.fpr,
         classifier.tpr,
-        classifier.fpr_combined,
-        classifier.tpr_combined,
+        # classifier.fpr_combined,
+        # classifier.tpr_combined,
         classifier.accuracy,
         classifier.f1,
         classifier.precision,
-        classifier.accuracy_combined,
-        classifier.f1_combined,
-        classifier.precision_combined,
+        # classifier.accuracy_combined,
+        # classifier.f1_combined,
+        # classifier.precision_combined,
         data_prep.y_test,
-        classifier.y_test_combined,
+        # classifier.y_test_combined,
         classifier.predictions,
-        classifier.predictions_combined,
-    )
+        # classifier.predictions_combined,
+        )
     metrics_printer.plot_roc_curve()
     metrics_printer.print_metrics()
 

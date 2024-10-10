@@ -100,7 +100,7 @@ Run the docker image:
 sudo docker run \
 -e DISPLAY=$DISPLAY \
 -v /tmp/.X11-unix:/tmp/.X11-unix \
--v /home/giovanni-pedrelli/SC-EXAM/:/app \
+-v /home/giovanni-pedrelli/Scrivania/SC-EXAM/:/app \
 --rm \
 -it \
 neural-network bash
@@ -141,7 +141,7 @@ Run the docker image:
 sudo docker run \
 -e DISPLAY=$DISPLAY \
 -v /tmp/.X11-unix:/tmp/.X11-unix \
--v /home/giovanni-pedrelli/TESI/NeuralNetwork:/app \
+-v /home/giovanni-pedrelli/Scrivania/TESI/NeuralNetwork:/app \
 --rm \
 -it \
 neural-network bash

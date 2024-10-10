@@ -7,15 +7,19 @@
 \usepackage{geometry} % permette la modifica della gabbia del documento
 \geometry{
     paper=a4paper, % formato di pagina
+    onecolumn,
+    twoside,
+    %top=5cm, % margine superiore
+    bottom=4cm, % margine inferiore circa 5.5cm default
+    %inner=2.5cm, % margine interno
+    %outer=3cm, % margine esterno
+    %heasheight= cm, % altezza della testatina
+    %headsep=0.7cm, % altezza della separazione tra fondo della testatina e corpo del testo default circa 0.7cm
     heightrounded, % modifica di poco le dimensioni della gabbia per contenere un numero intero di righe
     hmargin=2.6cm, % dimensioni margini destro-sinistro
     %vmargin=2.5cm, % dimensioni margini superiore-inferiore
-    %inner=2.5cm, % margine interno
-    %outer=3cm, % margine esterno
-    %top= cm % margine superiore
-    %bottom=5cm % margine inferiore
     %bindingoffset=0.5cm, % offset rilegatura
-    %showframe, % Uncomment to show how the type block is set on the page
+    %showframe, % uncomment to show how the type block is set on the page
 }
 
 %\usepackage{layaureo}
@@ -31,7 +35,12 @@
 % output-decimal-marker={,}: le convenzioni tipografiche italiane prevedono la virgola e non il punto
 \AtBeginDocument{\RenewCommandCopy\qty\SI}
 % per usare qty di siunitx e non avere conflitti con physics
+\DeclareSIUnit\clight{\text {c}}
+% definizione dell'utente della velocità della luce c
 \usepackage{physics}
+% per scrivere derivate, ma con \qty crea incompatibilità con siunitx
+%\usepackage{esdiff}
+% scrivere derivate correttamente
 
 %-------------------------------------LINGUE
 \usepackage[english,
