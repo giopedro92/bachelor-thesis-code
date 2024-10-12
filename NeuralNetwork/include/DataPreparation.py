@@ -1,6 +1,6 @@
 import uproot
-import numpy as np
-import pandas as pd
+import numpy                 as np
+import pandas                as pd
 
 from sklearn.model_selection import train_test_split
 
@@ -11,7 +11,10 @@ class DataPreparation:
 
     ############################### DATA PREPARATION ###############################
 
-    def __init__(self, file1_path, treeS_name="TreeS", treeB_name="TreeB"):
+    def __init__(self,
+                 file1_path,
+                 treeS_name = "TreeS",
+                 treeB_name = "TreeB"):
         """
         CONSTRUCTOR to initialize the DataPreparation object.
         Parameters:
@@ -52,89 +55,111 @@ class DataPreparation:
         self.df_signal     = treeS.arrays(library="pd")
         self.df_background = treeB.arrays(library="pd")
 
-        print("SEGNALE: ", self.df_signal)
+        print("SEGNALE:\n", self.df_signal)
+        print("FONDO:\n", self.df_background)
 
     ############################### PREPARE DATA ###############################
 
     def prepare_data(self):  # This function is designed to prepare data for the training and evaluation of a classification model.
         # Select features
         print("------------------------------------------------------------X_signal--------------------")
-        X_signal = self.df_signal[["massK0S", "tImpParBach", "tImpParV0", "CtK0S", "cosPAK0S", "nSigmapr", "dcaV0"]]
+        X_signal = self.df_signal[["massK0S",
+                                   "tImpParBach",
+                                   "tImpParV0",
+                                   "CtK0S",
+                                   "cosPAK0S",
+                                   "nSigmapr",
+                                   "dcaV0"]]
 
         print(X_signal)
 
         print("------------------------------------------------------------X_background--------------------")
-        X_background = self.df_background[["massK0S", "tImpParBach", "tImpParV0", "CtK0S", "cosPAK0S", "nSigmapr", "dcaV0"]]
+        X_background = self.df_background[["massK0S",
+                                           "tImpParBach",
+                                           "tImpParV0",
+                                           "CtK0S",
+                                           "cosPAK0S",
+                                           "nSigmapr",
+                                           "dcaV0"]]
 
         print(X_background)
 
         print("------------------------------------------------------------X_feature_names--------------------")
-        self.feature_names = ["massK0S", "tImpParBach", "tImpParV0", "CtK0S", "cosPAK0S", "nSigmapr", "dcaV0"]
+        self.feature_names = ["massK0S",
+                              "tImpParBach",
+                              "tImpParV0",
+                              "CtK0S",
+                              "cosPAK0S",
+                              "nSigmapr",
+                              "dcaV0"]
 
         ############################### Start Normalisation ###############################
         print("------------------------------------------------------------Normalization--------------------")
         print("--------------------------------------------------------------------------------Take the max_signal--------------------")
         # Normalize SIGNAL data by dividing by the maximum value of each variable
-        max_massK0S_signal = X_signal["massK0S"].max()
+        max_massK0S_signal     = X_signal["massK0S"].max()
         max_tImpParBach_signal = X_signal["tImpParBach"].max()
-        max_tImpParV0_signal = X_signal["tImpParV0"].max()
-        max_CtK0S_signal = X_signal["CtK0S"].max()
-        max_cosPAK0S_signal = X_signal["cosPAK0S"].max()
-        max_nSigmapr_signal = X_signal["nSigmapr"].max()
-        max_dcaV0_signal = X_signal["dcaV0"].max()
+        max_tImpParV0_signal   = X_signal["tImpParV0"].max()
+        max_CtK0S_signal       = X_signal["CtK0S"].max()
+        max_cosPAK0S_signal    = X_signal["cosPAK0S"].max()
+        max_nSigmapr_signal    = X_signal["nSigmapr"].max()
+        max_dcaV0_signal       = X_signal["dcaV0"].max()
 
         X_signal_normalized = pd.DataFrame()
 
         print("--------------------------------------------------------------------------------Divide_signal--------------------")
-        X_signal_normalized["massK0S"] = X_signal["massK0S"] / max_massK0S_signal
-        X_signal_normalized["tImpParBach"] = (X_signal["tImpParBach"] / max_tImpParBach_signal)
-        X_signal_normalized["tImpParV0"] = X_signal["tImpParV0"] / max_tImpParV0_signal
-        X_signal_normalized["CtK0S"] = X_signal["CtK0S"] / max_CtK0S_signal
-        X_signal_normalized["cosPAK0S"] = X_signal["cosPAK0S"] / max_cosPAK0S_signal
-        X_signal_normalized["nSigmapr"] = X_signal["nSigmapr"] / max_nSigmapr_signal
-        X_signal_normalized["dcaV0"] = X_signal["dcaV0"] / max_dcaV0_signal
+        X_signal_normalized["massK0S"]     = X_signal["massK0S"]     / max_massK0S_signal
+        X_signal_normalized["tImpParBach"] = X_signal["tImpParBach"] / max_tImpParBach_signal
+        X_signal_normalized["tImpParV0"]   = X_signal["tImpParV0"]   / max_tImpParV0_signal
+        X_signal_normalized["CtK0S"]       = X_signal["CtK0S"]       / max_CtK0S_signal
+        X_signal_normalized["cosPAK0S"]    = X_signal["cosPAK0S"]    / max_cosPAK0S_signal
+        X_signal_normalized["nSigmapr"]    = X_signal["nSigmapr"]    / max_nSigmapr_signal
+        X_signal_normalized["dcaV0"]       = X_signal["dcaV0"]       / max_dcaV0_signal
 
         print("--------------------------------------------------------------------------------Take the max_background--------------------")
         # Normalize BACKGROUND data by dividing by the maximum value of each variable
-        max_massK0S_background = X_background["massK0S"].max()
+        max_massK0S_background     = X_background["massK0S"].max()
         max_tImpParBach_background = X_background["tImpParBach"].max()
-        max_tImpParV0_background = X_background["tImpParV0"].max()
-        max_CtK0S_background = X_background["CtK0S"].max()
-        max_cosPAK0S_background = X_background["cosPAK0S"].max()
-        max_nSigmapr_background = X_background["nSigmapr"].max()
-        max_dcaV0_background = X_background["dcaV0"].max()
+        max_tImpParV0_background   = X_background["tImpParV0"].max()
+        max_CtK0S_background       = X_background["CtK0S"].max()
+        max_cosPAK0S_background    = X_background["cosPAK0S"].max()
+        max_nSigmapr_background    = X_background["nSigmapr"].max()
+        max_dcaV0_background       = X_background["dcaV0"].max()
 
         X_background_normalized = pd.DataFrame()
 
         print("--------------------------------------------------------------------------------Divide_background--------------------")
-        X_background_normalized["massK0S"] = (X_background["massK0S"] / max_massK0S_background)
-        X_background_normalized["tImpParBach"] = (X_background["tImpParBach"] / max_tImpParBach_background)
-        X_background_normalized["tImpParV0"] = (X_background["tImpParV0"] / max_tImpParV0_background)
-        X_background_normalized["CtK0S"] = X_background["CtK0S"] / max_CtK0S_background
-        X_background_normalized["cosPAK0S"] = (X_background["cosPAK0S"] / max_cosPAK0S_background)
-        X_background_normalized["nSigmapr"] = (X_background["nSigmapr"] / max_nSigmapr_background)
-        X_background_normalized["dcaV0"] = X_background["dcaV0"] / max_dcaV0_background
+        X_background_normalized["massK0S"]     = X_background["massK0S"]     / max_massK0S_background
+        X_background_normalized["tImpParBach"] = X_background["tImpParBach"] / max_tImpParBach_background
+        X_background_normalized["tImpParV0"]   = X_background["tImpParV0"]   / max_tImpParV0_background
+        X_background_normalized["CtK0S"]       = X_background["CtK0S"]       / max_CtK0S_background
+        X_background_normalized["cosPAK0S"]    = X_background["cosPAK0S"]    / max_cosPAK0S_background
+        X_background_normalized["nSigmapr"]    = X_background["nSigmapr"]    / max_nSigmapr_background
+        X_background_normalized["dcaV0"]       = X_background["dcaV0"]       / max_dcaV0_background
 
         ############################### End Normalisation ###############################
 
         print("------------------------------------------------------------Concatenation--------------------")
         # Concatenate normalized DataFrames
-        X = pd.concat([X_signal_normalized, X_background_normalized])
+        X = pd.concat([X_signal_normalized, X_background_normalized[:943645]])
+        # [:943645]
 
         print("------------------------------------------------------------Add target--------------------")
         # Add a 'target' column to distinguish signal (1) from background (0)
-        y = np.concatenate([np.ones(len(X_signal_normalized)), np.zeros(len(X_background_normalized))])
+        y = np.concatenate([np.ones(len(X_signal_normalized)), np.zeros(len(X_background_normalized))[:943645]])
 
         print("------------------------------------------------------------Split data--------------------")
         # Split data into training and test sets
-        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(X, y, test_size=0.1, random_state=42)
+        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(X,
+                                                                                y,
+                                                                                test_size    = 0.2,
+                                                                                random_state = 42)
             # SPLITTA DATASET IN TRAIN E TEST test_size=0.2
 
-        print("X TRAIN: ", self.X_train)
+        print("X_TRAIN: \n", self.X_train)
 
         ############################### Definition of category ###############################
-        print("------------------------------------------------------------Definition of category--------------------")
-
+        # print("------------------------------------------------------------Definition of category--------------------")
      
         # Separate data into two groups based on the absolute value of "eta" => categorisation
         self.X_train_cat1 = self.X_train[self.X_train['massK0S'].abs() > 0.498]
@@ -149,12 +174,10 @@ class DataPreparation:
         self.y_test_cat1  = self.y_test[self.X_test['massK0S'].abs() > 0.498]
         self.y_test_cat2  = self.y_test[self.X_test['massK0S'].abs() <= 0.498]
 
-"""        
-        # Dropping 'eta' column
-        self.X_train      = self.X_train.drop(columns=['massK0S'])
-        self.X_test       = self.X_test.drop(columns=['massK0S'])
-        self.X_train_cat1 = self.X_train_cat1.drop(columns=['massK0S'])
-        self.X_test_cat1  = self.X_test_cat1.drop(columns=['massK0S'])
-        self.X_train_cat2 = self.X_train_cat2.drop(columns=['massK0S'])
-        self.X_test_cat2  = self.X_test_cat2.drop(columns=['massK0S'])
-"""
+        # # Dropping 'eta' column
+        # self.X_train      = self.X_train.drop(columns=['massK0S'])
+        # self.X_test       = self.X_test.drop(columns=['massK0S'])
+        # self.X_train_cat1 = self.X_train_cat1.drop(columns=['massK0S'])
+        # self.X_test_cat1  = self.X_test_cat1.drop(columns=['massK0S'])
+        # self.X_train_cat2 = self.X_train_cat2.drop(columns=['massK0S'])
+        # self.X_test_cat2  = self.X_test_cat2.drop(columns=['massK0S'])

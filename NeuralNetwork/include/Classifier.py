@@ -1,13 +1,13 @@
 import time
-import numpy as np
-import tensorflow as tf
-import matplotlib.pyplot as plt
+import numpy               as np
+import tensorflow          as tf
+import matplotlib.pyplot   as plt
 
-from sklearn.svm import SVC
-from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm           import SVC
+from sklearn.ensemble      import GradientBoostingClassifier, RandomForestClassifier
+from sklearn.neighbors     import KNeighborsClassifier
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import (
+from sklearn.metrics       import (
     accuracy_score,
     roc_curve,
     roc_auc_score,
@@ -15,8 +15,8 @@ from sklearn.metrics import (
     precision_score,
     classification_report,
 )
-from tensorflow import keras
-from tensorflow.keras import layers
+from tensorflow            import keras
+from tensorflow.keras      import layers
 
 
 ############################### CLASS for model definition, training and evaluation ###############################
@@ -152,8 +152,9 @@ class SignalBackgroundClassifier:
         # X_test_cat2,
         # y_test_cat2,
     ):
-
-        # Formulate predictions for NN.
+        
+        # Formulate predictions for NN
+        print("------------------------------------------------------------probability--------------------")
         if isinstance(self.clf, NeuralNetwork):
             probability = self.clf.model.predict(X_test)
             # probability_cat1 = self.clf_cat1.model.predict(X_test_cat1)
@@ -165,6 +166,7 @@ class SignalBackgroundClassifier:
             # probability_cat2 = self.clf_cat2.predict_proba(X_test_cat2)[:, 1]
 
         # Calculate predicted probabilities for the positive class for the two cases
+        print("------------------------------------------------------------predictions--------------------")
         if isinstance(self.clf, NeuralNetwork):
             self.predictions = (probability > 0.5).astype(int)
             # predictions_cat1 = (probability_cat1 > 0.5).astype(int)
@@ -174,6 +176,7 @@ class SignalBackgroundClassifier:
             # predictions_cat1 = self.clf_cat1.predict(X_test_cat1)
             # predictions_cat2 = self.clf_cat2.predict(X_test_cat2)
 
+        # print("------------------------------------------------------------predictions_categories--------------------")
         # # Combine predictions and predicted probabilities for both categories
         # self.predictions_combined = np.concatenate(
         #     [predictions_cat1, predictions_cat2]
@@ -183,10 +186,12 @@ class SignalBackgroundClassifier:
         #     [y_test_cat1, y_test_cat2]
         # )  # Needed for Confusion Matrix
 
+        print("------------------------------------------------------------calculate_roc_curve--------------------")
         # Calculate ROC curve
         self.fpr, self.tpr, self.thresholds = roc_curve(y_test, probability)
-        self.roc_auc = roc_auc_score(y_test, probability)
+        self.roc_auc                        = roc_auc_score(y_test, probability)
 
+        # print("------------------------------------------------------------calculate_roc_curve_categories--------------------")
         # # ROC curve is to be calculated by combining two categories.
         # self.fpr_combined, self.tpr_combined, _ = roc_curve(
         #     self.y_test_combined, probability_combined
@@ -195,12 +200,14 @@ class SignalBackgroundClassifier:
         #     self.y_test_combined, probability_combined
         # )
 
+        print("------------------------------------------------------------calculate_metrics--------------------")
         # Calculate model accuracy, f1_score, precision
         # Full dataset
-        self.accuracy = accuracy_score(y_test, self.predictions)
-        self.f1 = f1_score(y_test, self.predictions)
+        self.accuracy  = accuracy_score(y_test, self.predictions)
+        self.f1        = f1_score(y_test, self.predictions)
         self.precision = precision_score(y_test, self.predictions)
 
+        # print("------------------------------------------------------------calculate_metrics_categories--------------------")
         # # Categorisation
         # self.accuracy_combined = accuracy_score(
         #     self.y_test_combined, self.predictions_combined
@@ -210,6 +217,7 @@ class SignalBackgroundClassifier:
         #     self.y_test_combined, self.predictions_combined
         # )
 
+        print("------------------------------------------------------------print--------------------")
         print("Full dataset :")
         print(classification_report(y_test, self.predictions))
         # print("Categorisation :")
@@ -220,6 +228,7 @@ class SignalBackgroundClassifier:
 
 class NeuralNetwork:
     def __init__(self, X_train, neurons, drop_out, learning_rate):
+        print("----------------------------------------NeuralNetwork--------------------")
         """
         Constructor for initializing the NeuralNetwork class.
         Parameters:
@@ -232,29 +241,32 @@ class NeuralNetwork:
     ############################### Model definition ###############################
     # COSTRUZIONE DEL MODELLO
     def build_model(self, X_train, neurons, drop_out, learning_rate):
+        print("----------------------------------------NeuralNetworkbuild_model--------------------")
         model = keras.Sequential(
             [
                 layers.Input(
-                    shape=(X_train.shape[1],)
+                    shape = (X_train.shape[1],)
                 ),  # layer di input, shape è dimensione dei dati
                 layers.Dense(
-                    neurons, activation="relu"
+                    neurons, activation = "relu"
                 ),  # layer collegati a tutti i neuroni
                 layers.Dropout(
                     drop_out
                 ),  # spegne un tot di neuroni per non influenzare troppo la rete
-                layers.Dense(neurons, activation="relu"),
+                layers.Dense(neurons, activation = "relu"),
                 layers.Dropout(drop_out),
-                layers.Dense(1, activation="sigmoid"),
+                layers.Dense(1, activation = "sigmoid"),
             ]
         )
 
         optimizer = keras.optimizers.Adam(
-            learning_rate=learning_rate
+            learning_rate = learning_rate
         )  # usa optimizer Adam
 
         model.compile(
-            optimizer=optimizer, loss="binary_crossentropy", metrics=["accuracy"]
+            optimizer = optimizer,
+            loss      = "binary_crossentropy",
+            metrics   = ["accuracy"],
         )
         # loss function più adeguata per il problema
         return model
@@ -262,6 +274,7 @@ class NeuralNetwork:
     ############################### Training of the model ###############################
 
     def train_classifier(self, X_train, y_train):
+        print("----------------------------------------NeuralNetworktrain_classifier--------------------")
         # Start measuring time
         start_time = time.time()
 
@@ -269,9 +282,9 @@ class NeuralNetwork:
         self.history = self.model.fit(
             X_train,
             y_train,
-            epochs=1,
-            batch_size=32,
-            validation_split=0.2,
+            epochs           = 10,
+            batch_size       = 32,
+            validation_split = 0.2,
         )
         # DIVIDE TRAIN TRA TRAIN E VALIDATION validation_split=0.2
 
@@ -301,6 +314,7 @@ class Additional_evaluation:
         - Label the bars with the feature names
         - Label the x-axis as 'Importance'.
         """
+        
         if self.model_type in ["BDT", "Random_Forest"]:
             if hasattr(self.clf, "feature_importances_"):
                 # Calculate feature importance for BDT and Random Forest classifiers
@@ -322,6 +336,7 @@ class Additional_evaluation:
                 print(
                     "Plotting feature importance is not supported for this type of classifier."
                 )
+        
         elif self.model_type == "SVT":
             if isinstance(self.clf, SVC) and self.clf.kernel == "linear":
                 # Calculate feature importance for SVM with linear kernel
@@ -342,6 +357,7 @@ class Additional_evaluation:
                 print(
                     "Plotting feature importance is not supported for this type of classifier."
                 )
+        
         elif self.model_type == "Neural_Network":
             if isinstance(self.clf, NeuralNetwork):
                 # Calculate feature importance for Neural Network model
@@ -362,6 +378,7 @@ class Additional_evaluation:
                 print(
                     "Plotting feature importance is not supported for this type of classifier."
                 )
+        
         elif self.model_type == "kNN":
             if isinstance(self.clf, KNeighborsClassifier):
                 # Calculate feature importance for kNN classifier
@@ -398,6 +415,7 @@ class Additional_evaluation:
                 print(
                     "Feature importance calculation is not supported for this type of classifier."
                 )
+        
         else:
             print(
                 "Plotting feature importance is not supported for {}.".format(

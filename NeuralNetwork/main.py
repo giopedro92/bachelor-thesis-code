@@ -19,7 +19,7 @@ and checks whether the correct number of arguments has been supplied
 from the command line.
 
 For example: one should verify that the execution of this code using a bash
-file would be Python3 main.py <name_model>.
+file would be python3 main.py <name_model>.
 If one wishes to execute this code independently, 
 one should enter the following command into the terminal 
 (it is not necessary to call other modules).
@@ -50,18 +50,19 @@ if __name__ == "__main__":
     print("----------------------------------------prepare_data--------------------")
     data_prep.prepare_data()
 
-    print("X_TRAIN:\n", data_prep.X_train)
-    print("PRIMI 100:\n", data_prep.X_train[:100])
+    print("X_TRAIN:\n",   data_prep.X_train)
+    print("PRIMI 100:\n", data_prep.X_train)
 
     ############################### Model Definition ###############################
     print("--------------------MODEL DEFINITION--------------------")
 
+    print("----------------------------------------SignalBackgroundClassifier--------------------")
     if model_type in ["BDT", "Neural_Network", "Random_Forest", "SVT", "kNN"]:
         classifier = clf.SignalBackgroundClassifier(
-            model_type=model_type,
-            X_train=data_prep.X_train,
-            X_train_cat1=data_prep.X_train_cat1,
-            X_train_cat2=data_prep.X_train_cat2,
+            model_type   = model_type,
+            X_train      = data_prep.X_train,
+            X_train_cat1 = data_prep.X_train_cat1,
+            X_train_cat2 = data_prep.X_train_cat2,
         )
     else:
         print("The model in question is not supported.")
@@ -74,15 +75,15 @@ if __name__ == "__main__":
 
     print("----------------------------------------train_classifier--------------------")
     classifier.train_classifier(
-        data_prep.X_train[:100],
-        data_prep.y_train[:100],
-        #data_prep.X_train_cat1[:100],
-        #data_prep.y_train_cat1[:100],
-        #data_prep.X_train_cat2[:100],
-        #data_prep.y_train_cat2[:100],
+        data_prep.X_train,
+        data_prep.y_train,
+        # data_prep.X_train_cat1,
+        # data_prep.y_train_cat1,
+        # data_prep.X_train_cat2,
+        # data_prep.y_train_cat2,
         data_prep.feature_names,
         model_type,
-    ) ########### ERRORE QUI
+    )
     print("Training time ({}):".format(model_type), classifier.training_time)
     
     print("----------------------------------------evaluate_classifier--------------------")
@@ -106,9 +107,9 @@ output_file = os.path.join(folder1_path, model_type + ".txt")
 
 # It is necessary to create the output file required for the Metrics module
 with open(output_file, "w") as f:
-    f.write("accuracy: {}\n".format(classifier.accuracy))  # Accuracy results
-    f.write("f1 score: {}\n".format(classifier.f1))  # f1_score results
-    f.write("precision: {}\n".format(classifier.precision))  # precision results
+    f.write("accuracy:  {}\n".format(classifier.accuracy))  # Accuracy results
+    f.write("f1 score:  {}\n".format(classifier.f1))        # f1_score results
+    f.write("precision: {}\n".format(classifier.precision)) # precision results
     f.write("fpr\ttpr\n")  # Printing of TPR and FPR data for ROC plot.
     for i in range(len(classifier.fpr)):
         f.write("{}\t{}\n".format(classifier.fpr[i], classifier.tpr[i]))
@@ -117,6 +118,7 @@ with open(output_file, "w") as f:
     print("--------------------METRICS DISPLAY--------------------")
 
     # Print Roc and Confusion Matrix
+    print("----------------------------------------PrintMetrics--------------------")
     metrics_printer = mp.PrintMetrics(
         classifier.fpr,
         classifier.tpr,
@@ -133,7 +135,11 @@ with open(output_file, "w") as f:
         classifier.predictions,
         # classifier.predictions_combined,
         )
+    
+    print("----------------------------------------plot_roc_curve--------------------")    
     metrics_printer.plot_roc_curve()
+
+    print("----------------------------------------print_metrics--------------------")
     metrics_printer.print_metrics()
 
 ############################### End ###############################

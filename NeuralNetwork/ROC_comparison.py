@@ -1,6 +1,14 @@
+############################### Start import ###############################
+print("--------------------START IMPORT--------------------")
+
 import sys
 import os
 import matplotlib.pyplot as plt
+
+############################### End import ###############################
+
+############################### Start of code ###############################
+print("--------------------START OF THE CODE--------------------")
 
 # Get model names from the command line arguments
 model_names = sys.argv[1:]
@@ -13,7 +21,7 @@ all_tpr = []
 for model_name in model_names:
     file_name = model_name + ".txt"
 
-    file_path = os.path.join("evaluation_results/ROC_comparison", file_name)
+    file_path = os.path.join("evaluation_results/", file_name)
 
     with open(file_path, 'r') as f:
         for _ in range(4):
@@ -37,7 +45,7 @@ plt.title("ROC Curve")
 plt.legend()
 
 # Save figure
-save_path = "plot_ROC/ROC_curve.png"
+save_path = "evaluation_results/ROC_comparison/ROC_comparison.svg"
 plt.savefig(save_path)
 
 #plt.show()

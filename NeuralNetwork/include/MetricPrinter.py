@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
-import seaborn as sns
+import seaborn           as sns
 
-from sklearn.metrics import (
+from sklearn.metrics     import (
     accuracy_score,
     roc_curve,
     roc_auc_score,
@@ -50,27 +50,32 @@ class PrintMetrics:
         - predictions_combined (array-like): for combined categories.
         """
 
-        self.fpr = fpr
-        self.tpr = tpr
+        self.fpr         = fpr
+        self.tpr         = tpr
         # self.fpr_combined = fpr_combined
         # self.tpr_combined = tpr_combined
-        self.accuracy = accuracy
-        self.f1 = f1
-        self.precision = precision
+        self.accuracy    = accuracy
+        self.f1          = f1
+        self.precision   = precision
         # self.accuracy_combined = accuracy_combined
         # self.f1_combined = f1_combined
         # self.precision_combined = precision_combined
-        self.y_test = y_test
+        self.y_test      = y_test
         # self.y_test_combined = y_test_combined
         self.predictions = predictions
         # self.predictions_combined = predictions_combined
 
     def plot_roc_curve(self):
         # Calculate background rejection (1 - FPR)
+        print("------------------------------------------------------------background_rejection--------------------")        
+        
         background_rejection = 1 - self.fpr
         # background_rejection_combined = 1 - self.fpr_combined
 
+
         # Plot signal efficiency vs background rejection
+        print("------------------------------------------------------------roc_curve--------------------")
+
         plt.figure(figsize=(8, 6))
         plt.plot(
             self.tpr, background_rejection, color="blue", lw=2, label="Full dataset"
@@ -93,15 +98,19 @@ class PrintMetrics:
 
     def print_metrics(self):
         # Print metrics
-        print("Accuracy:", self.accuracy)
-        print("F1 Score:", self.f1)
+        print("------------------------------------------------------------print_metrics--------------------")        
+        
+        print("Accuracy: ", self.accuracy)
+        print("F1 Score: ", self.f1)
         print("Precision:", self.precision)
 
-        # print("Accuracy Combined:", self.accuracy_combined)
-        # print("F1 Score Combined:", self.f1_combined)
+        # print("Accuracy Combined: ", self.accuracy_combined)
+        # print("F1 Score Combined: ", self.f1_combined)
         # print("Precision Combined:", self.precision_combined)
 
+
         # Confusion Matrix
+        print("------------------------------------------------------------confusion_matrix--------------------")        
         cm = confusion_matrix(self.y_test, self.predictions)
 
         # Visualize Confusion Matrix
@@ -113,10 +122,12 @@ class PrintMetrics:
         # plt.show()
         plt.savefig("evaluation_results/confusion_matrix.svg")
 
-        # Confusion Matrix
+
+        # Confusion Matrix Combined
+        #print("------------------------------------------------------------confusion_matrix_combined--------------------")        
         # cm_combined = confusion_matrix(self.y_test_combined, self.predictions_combined)
 
-        # Visualize Confusion Matrix
+        # Visualize Confusion Matrix Combined
         # plt.figure(figsize=(8, 6))
         # sns.heatmap(cm_combined, annot=True, fmt="d", cmap="Blues")
         # plt.title("Confusion Matrix (Categorisation)")
