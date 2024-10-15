@@ -52,11 +52,13 @@ class DataPreparation:
 
         print("------------------------------------------------------------.arrays--------------------")
         # Load data from Trees into Pandas DataFrames (df)
-        self.df_signal     = treeS.arrays(library="pd")
-        self.df_background = treeB.arrays(library="pd")
-
-        print("SEGNALE:\n", self.df_signal)
-        print("FONDO:\n", self.df_background)
+        print("--------------------------------------------------------------------------------df_signal--------------------")
+        self.df_signal     = treeS.arrays(library = "pd")
+        print(self.df_signal)
+        
+        print("--------------------------------------------------------------------------------df_background--------------------")
+        self.df_background = treeB.arrays(library = "pd")
+        print(self.df_background)
 
     ############################### PREPARE DATA ###############################
 
@@ -70,7 +72,6 @@ class DataPreparation:
                                    "cosPAK0S",
                                    "nSigmapr",
                                    "dcaV0"]]
-
         print(X_signal)
 
         print("------------------------------------------------------------X_background--------------------")
@@ -81,7 +82,6 @@ class DataPreparation:
                                            "cosPAK0S",
                                            "nSigmapr",
                                            "dcaV0"]]
-
         print(X_background)
 
         print("------------------------------------------------------------X_feature_names--------------------")
@@ -116,6 +116,9 @@ class DataPreparation:
         X_signal_normalized["nSigmapr"]    = X_signal["nSigmapr"]    / max_nSigmapr_signal
         X_signal_normalized["dcaV0"]       = X_signal["dcaV0"]       / max_dcaV0_signal
 
+        print("--------------------------------------------------------------------------------X_signal_normalized--------------------")
+        print(X_signal_normalized)
+
         print("--------------------------------------------------------------------------------Take the max_background--------------------")
         # Normalize BACKGROUND data by dividing by the maximum value of each variable
         max_massK0S_background     = X_background["massK0S"].max()
@@ -137,26 +140,55 @@ class DataPreparation:
         X_background_normalized["nSigmapr"]    = X_background["nSigmapr"]    / max_nSigmapr_background
         X_background_normalized["dcaV0"]       = X_background["dcaV0"]       / max_dcaV0_background
 
+        print("--------------------------------------------------------------------------------X_background_normalized--------------------")
+        print(X_background_normalized)
+
         ############################### End Normalisation ###############################
+
+        print("--------------------------------------------------------------------------------X_background_normalized[:943645]--------------------")
+        print(X_background_normalized[:943645])
+
 
         print("------------------------------------------------------------Concatenation--------------------")
         # Concatenate normalized DataFrames
-        X = pd.concat([X_signal_normalized, X_background_normalized[:943645]])
-        # [:943645]
+        X = pd.concat([X_signal_normalized,
+                       X_background_normalized[:943645]])
+
+        print("--------------------------------------------------------------------------------X--------------------")
+        print(X)
 
         print("------------------------------------------------------------Add target--------------------")
         # Add a 'target' column to distinguish signal (1) from background (0)
-        y = np.concatenate([np.ones(len(X_signal_normalized)), np.zeros(len(X_background_normalized))[:943645]])
+        # y = np.concatenate([np.ones(len(X_signal_normalized)),
+        #                    np.zeros(943645)])
+        
+        
+        y = np.concatenate([np.ones(len(X_signal_normalized)),
+                            np.zeros(len(X_background_normalized[:943645]))])
+        
+        print("--------------------------------------------------------------------------------y--------------------")
+        print(y)
 
         print("------------------------------------------------------------Split data--------------------")
         # Split data into training and test sets
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(X,
                                                                                 y,
                                                                                 test_size    = 0.2,
-                                                                                random_state = 42)
+                                                                                random_state = 42,
+                                                                                shuffle      = True)
             # SPLITTA DATASET IN TRAIN E TEST test_size=0.2
 
-        print("X_TRAIN: \n", self.X_train)
+        print("--------------------------------------------------------------------------------X_train--------------------")
+        print(self.X_train)
+
+        print("--------------------------------------------------------------------------------y_train--------------------")
+        print(self.y_train) 
+
+        print("--------------------------------------------------------------------------------X_test--------------------")
+        print(self.X_test)
+
+        print("--------------------------------------------------------------------------------y_test--------------------")
+        print(self.y_test)
 
         ############################### Definition of category ###############################
         # print("------------------------------------------------------------Definition of category--------------------")
@@ -175,9 +207,11 @@ class DataPreparation:
         self.y_test_cat2  = self.y_test[self.X_test['massK0S'].abs() <= 0.498]
 
         # # Dropping 'eta' column
-        # self.X_train      = self.X_train.drop(columns=['massK0S'])
-        # self.X_test       = self.X_test.drop(columns=['massK0S'])
-        # self.X_train_cat1 = self.X_train_cat1.drop(columns=['massK0S'])
-        # self.X_test_cat1  = self.X_test_cat1.drop(columns=['massK0S'])
-        # self.X_train_cat2 = self.X_train_cat2.drop(columns=['massK0S'])
-        # self.X_test_cat2  = self.X_test_cat2.drop(columns=['massK0S'])
+        # self.X_train      = self.X_train.drop(columns=['CtK0S'])
+        # self.X_test       = self.X_test.drop(columns=['CtK0S'])
+
+        # self.X_train_cat1 = self.X_train_cat1.drop(columns=['CtK0S'])
+        # self.X_test_cat1  = self.X_test_cat1.drop(columns=['CtK0S'])
+
+        # self.X_train_cat2 = self.X_train_cat2.drop(columns=['CtK0S'])
+        # self.X_test_cat2  = self.X_test_cat2.drop(columns=['CtK0S'])

@@ -7,14 +7,12 @@ from sklearn.svm           import SVC
 from sklearn.ensemble      import GradientBoostingClassifier, RandomForestClassifier
 from sklearn.neighbors     import KNeighborsClassifier
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics       import (
-    accuracy_score,
-    roc_curve,
-    roc_auc_score,
-    f1_score,
-    precision_score,
-    classification_report,
-)
+from sklearn.metrics       import (accuracy_score,
+                                   roc_curve,
+                                   roc_auc_score,
+                                   f1_score,
+                                   precision_score,
+                                   classification_report)
 from tensorflow            import keras
 from tensorflow.keras      import layers
 
@@ -27,10 +25,10 @@ class SignalBackgroundClassifier:
 
     def __init__(
         self,
-        model_type="Neural_Network",
-        X_train=None,
-        X_train_cat1=None,
-        X_train_cat2=None,
+        model_type   = "Neural_Network",
+        X_train      = None,
+        X_train_cat1 = None,
+        X_train_cat2 = None,
     ):
         """
         Initialize the SignalBackgroundClassifier object.
@@ -65,7 +63,10 @@ class SignalBackgroundClassifier:
             self.clf_cat2 = SVC(kernel="linear", probability=True)
         
         elif model_type == "Neural_Network":
-            self.clf = NeuralNetwork(X_train, 32, 0.2, 0.01)
+            self.clf = NeuralNetwork(X_train,
+                                     32,
+                                     0.2,
+                                     0.01)
             # self.clf_cat1 = NeuralNetwork(X_train_cat1, 64, 0.3, 0.001)
             # self.clf_cat2 = NeuralNetwork(X_train_cat2, 32, 0.2, 0.01)
         
@@ -96,28 +97,34 @@ class SignalBackgroundClassifier:
 
     ############################### Training ###############################
 
-    def train_classifier(
-        self,
-        X_train,
-        y_train,
-        # X_train_cat1,
-        # y_train_cat1,
-        # X_train_cat2,
-        # y_train_cat2,
-        feature_names,
-        model_type,
-    ):  # Training function
+    def train_classifier(self,
+                         X_train,
+                         y_train,
+                        #  X_train_cat1,
+                        #  y_train_cat1,
+                        #  X_train_cat2,
+                        #  y_train_cat2,
+                         feature_names,
+                         model_type,
+                        ):  # Training function
 
         # Train the classifier NN, noting the call to the class NeuralNetwork
         # and the function contained therein, namely build_model
         if isinstance(self.clf, NeuralNetwork):
             # self.clf_cat1.build_model(X_train_cat1, 64, 0.3, 0.01)
             # self.clf_cat2.build_model(X_train_cat2, 64, 0.3, 0.01)
-            self.clf.build_model(X_train, 64, 0.3, 0.01)
+            self.clf.build_model(X_train,
+                                 64,
+                                 0.3,
+                                 0.01)
+# 64
+# 0.3
+# 0.01
 
             # Start measuring training time
             start_time = time.time()
-            self.clf.train_classifier(X_train, y_train)
+            self.clf.train_classifier(X_train,
+                                      y_train)
             # Calculate training time
             self.training_time = time.time() - start_time
 
@@ -127,7 +134,8 @@ class SignalBackgroundClassifier:
         else:  # Train the other classifier
             # Start measuring training time
             start_time = time.time()
-            self.clf.fit(X_train, y_train)
+            self.clf.fit(X_train,
+                         y_train)
             # Calculate training time
             self.training_time = time.time() - start_time
 
@@ -136,22 +144,23 @@ class SignalBackgroundClassifier:
 
         # Create an instance of the Additional_evaluation class
         # and then call the methods associated with it.
-        additional_evaluation = Additional_evaluation(
-            self.clf, feature_names, model_type
-        )
-        additional_evaluation.plot_feature_importance(self.clf, X_train, y_train)
+        additional_evaluation = Additional_evaluation(self.clf,
+                                                      feature_names,
+                                                      model_type)
+        additional_evaluation.plot_feature_importance(self.clf,
+                                                      X_train,
+                                                      y_train)
 
     ############################### Evaluating ###############################
 
-    def evaluate_classifier(
-        self,
-        X_test,
-        y_test,
-        # X_test_cat1,
-        # y_test_cat1,
-        # X_test_cat2,
-        # y_test_cat2,
-    ):
+    def evaluate_classifier(self,
+                            X_test,
+                            y_test,
+                            # X_test_cat1,
+                            # y_test_cat1,
+                            # X_test_cat2,
+                            # y_test_cat2,
+                           ):
         
         # Formulate predictions for NN
         print("------------------------------------------------------------probability--------------------")
@@ -188,7 +197,7 @@ class SignalBackgroundClassifier:
 
         print("------------------------------------------------------------calculate_roc_curve--------------------")
         # Calculate ROC curve
-        self.fpr, self.tpr, self.thresholds = roc_curve(y_test, probability)
+        self.fpr, self.tpr, self.thresholds = roc_curve(y_test,     probability)
         self.roc_auc                        = roc_auc_score(y_test, probability)
 
         # print("------------------------------------------------------------calculate_roc_curve_categories--------------------")
@@ -203,8 +212,8 @@ class SignalBackgroundClassifier:
         print("------------------------------------------------------------calculate_metrics--------------------")
         # Calculate model accuracy, f1_score, precision
         # Full dataset
-        self.accuracy  = accuracy_score(y_test, self.predictions)
-        self.f1        = f1_score(y_test, self.predictions)
+        self.accuracy  = accuracy_score(y_test,  self.predictions)
+        self.f1        = f1_score(y_test,        self.predictions)
         self.precision = precision_score(y_test, self.predictions)
 
         # print("------------------------------------------------------------calculate_metrics_categories--------------------")
@@ -227,7 +236,11 @@ class SignalBackgroundClassifier:
 ############################### CLASS NN ###############################
 
 class NeuralNetwork:
-    def __init__(self, X_train, neurons, drop_out, learning_rate):
+    def __init__(self,
+                 X_train,
+                 neurons,
+                 drop_out,
+                 learning_rate):
         print("----------------------------------------NeuralNetwork--------------------")
         """
         Constructor for initializing the NeuralNetwork class.
@@ -236,11 +249,18 @@ class NeuralNetwork:
         This constructor creates and initializes the neural network model using the provided training data.
         """
 
-        self.model = self.build_model(X_train, neurons, drop_out, learning_rate)
+        self.model = self.build_model(X_train,
+                                      neurons,
+                                      drop_out,
+                                      learning_rate)
 
     ############################### Model definition ###############################
     # COSTRUZIONE DEL MODELLO
-    def build_model(self, X_train, neurons, drop_out, learning_rate):
+    def build_model(self,
+                    X_train,
+                    neurons,
+                    drop_out,
+                    learning_rate):
         print("----------------------------------------NeuralNetworkbuild_model--------------------")
         model = keras.Sequential(
             [
@@ -248,14 +268,19 @@ class NeuralNetwork:
                     shape = (X_train.shape[1],)
                 ),  # layer di input, shape è dimensione dei dati
                 layers.Dense(
-                    neurons, activation = "relu"
+                    neurons,
+                    activation = "relu"
                 ),  # layer collegati a tutti i neuroni
                 layers.Dropout(
                     drop_out
                 ),  # spegne un tot di neuroni per non influenzare troppo la rete
-                layers.Dense(neurons, activation = "relu"),
-                layers.Dropout(drop_out),
-                layers.Dense(1, activation = "sigmoid"),
+                layers.Dense(
+                    neurons,
+                    activation = "relu"),
+                layers.Dropout(
+                    drop_out),
+                layers.Dense(1,
+                             activation = "sigmoid"),
             ]
         )
 
@@ -273,18 +298,19 @@ class NeuralNetwork:
 
     ############################### Training of the model ###############################
 
-    def train_classifier(self, X_train, y_train):
+    def train_classifier(self,
+                         X_train,
+                         y_train):
         print("----------------------------------------NeuralNetworktrain_classifier--------------------")
         # Start measuring time
         start_time = time.time()
 
         # funzione fondamentale con cui viene allenato il modello model.fit
-        self.history = self.model.fit(
-            X_train,
-            y_train,
-            epochs           = 10,
-            batch_size       = 32,
-            validation_split = 0.2,
+        self.history = self.model.fit(X_train,
+                                      y_train,
+                                      epochs           = 10,
+                                      batch_size       = 32,
+                                      validation_split = 0.2,
         )
         # DIVIDE TRAIN TRA TRAIN E VALIDATION validation_split=0.2
 
@@ -295,7 +321,10 @@ class NeuralNetwork:
 ############################### CLASS Additional tools ###############################
 
 class Additional_evaluation:
-    def __init__(self, clf, feature_names, model_type):
+    def __init__(self,
+                 clf,
+                 feature_names,
+                 model_type):
         """
         Constructor to initialize Additional_evaluation object with classifier, feature names, and model type.
         Parameters:
@@ -308,7 +337,10 @@ class Additional_evaluation:
         self.model_type = model_type
 
     # Plot feature importance for different classifier types
-    def plot_feature_importance(self, clf, X_test, y_test):
+    def plot_feature_importance(self,
+                                clf,
+                                X_test,
+                                y_test):
         """
         - barh: Draws a horizontal bar graph of the importance features, with the features on the y-axis and the importance on the bars.
         - Label the bars with the feature names
@@ -361,13 +393,14 @@ class Additional_evaluation:
         elif self.model_type == "Neural_Network":
             if isinstance(self.clf, NeuralNetwork):
                 # Calculate feature importance for Neural Network model
-                weights = np.abs(self.clf.model.get_weights()[0]).mean(axis=1)
-                sorted_indices = np.argsort(weights)[::-1]
+                weights         = np.abs(self.clf.model.get_weights()[0]).mean(axis=1)
+                sorted_indices  = np.argsort(weights)[::-1]
                 sorted_features = [self.feature_names[i] for i in sorted_indices]
-                sorted_weights = weights[sorted_indices]
+                sorted_weights  = weights[sorted_indices]
 
                 plt.figure(figsize=(10, 6))
-                plt.barh(sorted_features, sorted_weights)
+                plt.barh(sorted_features,
+                         sorted_weights)
                 plt.xlabel("Feature Importance")
                 plt.ylabel("Features")
                 plt.title("Feature Importance for Neural Network")

@@ -1,0 +1,14 @@
+Evaluation on Full Dataset:
+Accuracy: 0.75125
+F1 Score: 0.7626997376580015
+Precision: 0.735510579576817
+Best parameter {'metric': 'euclidean', 'n_neighbors': 75, 'weights': 'uniform'}
+Best score of Cross-Validation: 0.8387870234334907
+Evaluation on Combined Dataset:
+Accuracy: 0.836
+F1 Score: 0.8408539543910722
+Precision: 0.8240608654303376
+Best parameter category 1: {'metric': 'manhattan', 'n_neighbors': 75, 'weights': 'uniform'}
+Best parameter category 2: {'metric': 'euclidean', 'n_neighbors': 75, 'weights': 'distance'}
+Best score of Cross-Validation category 1: 0.8902345095641117
+Best score of Cross-Validation category 2: 0.9261163468073491

@@ -61,6 +61,7 @@ Run the docker image:
     ```
 -->
 
+/home/giovanni-pedrelli/Scrivania/TESI/Analysis
 - with `--user $(id -u)`
     ```bash
     sudo docker run \

@@ -30,6 +30,10 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{xfrac} % nice inline one character fractions
+
+\usepackage{physics}
+% per scrivere derivate, ma con \qty crea incompatibilità con siunitx
+
 \usepackage[output-decimal-marker={.}]{siunitx}
 % siunitx: numeri con unità di misura
 % output-decimal-marker={,}: le convenzioni tipografiche italiane prevedono la virgola e non il punto
@@ -37,10 +41,9 @@
 % per usare qty di siunitx e non avere conflitti con physics
 \DeclareSIUnit\clight{\text {c}}
 % definizione dell'utente della velocità della luce c
-\usepackage{physics}
-% per scrivere derivate, ma con \qty crea incompatibilità con siunitx
-%\usepackage{esdiff}
-% scrivere derivate correttamente
+
+%-------------------------------------CHIMICA
+\usepackage{chemformula}
 
 %-------------------------------------LINGUE
 \usepackage[english,
@@ -61,7 +64,7 @@
 % permette di caricare immagini svg
 \svgpath{{res/fig/}} % cartella .svg
 
-% \usepackage{flafter}
+%\usepackage{flafter}
 % impedisce alle figure di apparire prima della loro definizione nel testo
 
 %\usepackage{float}
@@ -110,6 +113,8 @@
 %\linenumbers
 
 \usepackage{comment}
+
+\usepackage{microtype}
 
 %-------------------------------------LISTATI CODICE
 

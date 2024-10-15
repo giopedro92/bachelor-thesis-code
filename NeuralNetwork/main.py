@@ -50,9 +50,6 @@ if __name__ == "__main__":
     print("----------------------------------------prepare_data--------------------")
     data_prep.prepare_data()
 
-    print("X_TRAIN:\n",   data_prep.X_train)
-    print("PRIMI 100:\n", data_prep.X_train)
-
     ############################### Model Definition ###############################
     print("--------------------MODEL DEFINITION--------------------")
 
