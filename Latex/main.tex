@@ -34,15 +34,20 @@
         %\pagenumbering{Roman}
         \pagestyle{empty}
         %-----------------------------FRONTESPIZIO
-        \input{src/1-frontmatter/frontespizio}
+        \begin{titlepage}
+            \input{src/1-frontmatter/frontespizio}
+        \end{titlepage}
         
-        \cleardoublepage
+        %\cleardoublepage % da attivare se c'è dedica
         
         %\input{src/1-frontmatter/keywords}
         %-----------------------------DEDICA
         %\input{src/1-frontmatter/dedica}
+        
         %-----------------------------ABSTRACT
-        \input{src/1-frontmatter/abstract}
+        \begin{abstract}
+            \input{src/1-frontmatter/abstract}
+        \end{abstract}
     %---------------------------------INDICE
     \tableofcontents
     %\listoffigures % elenco delle figure
@@ -59,13 +64,29 @@
         %\pagenumbering{arabic}
         \pagestyle{headings}
         %-----------------------------INTRODUZIONE
-        %\input{src/2-mainmatter/0-introduzione}
+        \chapter*{Introduzione}
+        \addcontentsline{toc}{chapter}{Introduzione}
+        \input{src/2-mainmatter/0-introduzione}
         %-----------------------------CAPITOLO 1
+        \chapter{Adronizzazione dei quark pesanti}
+        \label{cha:1-QCD}        
         \input{src/2-mainmatter/1-cap1}
         %-----------------------------CAPITOLO 2
+        \chapter{Esperimento ALICE}
+        \label{cha:2-ALICE}
         \input{src/2-mainmatter/2-cap2}
         %-----------------------------CAPITOLO 3
+        \chapter{Ricostruzione del barione $\Lambda^{+}_{c}$}
+        \label{cha:3-LAMBDA+c}
         \input{src/2-mainmatter/3-cap3}
+        %-----------------------------CONCLUSIONI
+        \chapter*{Conclusioni}
+        \addcontentsline{toc}{chapter}{Conclusioni}
+        \input{src/2-mainmatter/4-conclusioni}
+        \renewcommand{\chaptermark}[1]{%
+            \markboth{#1}{}%
+        }
+        \chaptermark{CONCLUSIONI}
         %-----------------------------APPENDICE
         %\appendix
 

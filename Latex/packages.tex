@@ -35,6 +35,8 @@
 % per scrivere derivate, ma con \qty crea incompatibilità con siunitx
 
 \usepackage[output-decimal-marker={.}]{siunitx}
+\sisetup{separate-uncertainty,
+         per-mode = symbol} % incertezze col \pm
 % siunitx: numeri con unità di misura
 % output-decimal-marker={,}: le convenzioni tipografiche italiane prevedono la virgola e non il punto
 \AtBeginDocument{\RenewCommandCopy\qty\SI}
@@ -69,6 +71,11 @@
 
 %\usepackage{float}
 % permette di forzare il posizionamento dell’oggetto nel punto in cui è situato con l’opzione H
+
+%-------------------------------------TABELLE
+\usepackage{tabularray} % tabelle belle
+\usepackage{multirow} % tabelle con celle a mezza riga
+\usepackage{booktabs} % tabelle con filetti belli
 
 %-------------------------------------RIFERIMENTI
 \usepackage{hyperref}
@@ -105,7 +112,7 @@
 %\usepackage{setspace} % serve a fornire comandi di interlinea standard
 %\onehalfspacing{} % imposta interlinea a 1,5 ed equivale a \linespread{1,5}
 
-%\usepackage{xcolor} % colori frontespizio in bozza
+\usepackage{xcolor}
 
 %\usepackage[a-1b]{pdfx} % conformità pdf generato
 
@@ -116,13 +123,30 @@
 
 \usepackage{microtype}
 
+\usepackage{url}
+
 %-------------------------------------LISTATI CODICE
+\usepackage{listings}
+\lstset{language=Python,
+        basicstyle=\ttfamily\small,
+        keywordstyle=\color{blue},
+        stringstyle=\color{red},
+        commentstyle=\color{green},
+        showstringspaces=false,
+        numbers=left,
+        numberstyle=\tiny\color{gray}}
 
 %-------------------------------------Definizioni di comandi e ambienti
+\newenvironment{abstract}
+% definizione ambiente abstract ispirato ad article, non presente in book
+  {%\cleardoublepage% se non si vuole sommario come un chapter
+    \thispagestyle{empty}%
+    \null \vfill\begin{center}%
+      \chapter*{\abstractname} \end{center}}%
+  {\vfill\null}
 
 \usepackage{fancyhdr}
 % per intestazioni e piè di pagina (fancy header)
-
 \newcommand{\fncyfront}{%
     \fancyhead[RO]{{\footnotesize\rightmark}}
     \fancyfoot[RO]{\thepage}
@@ -138,11 +162,3 @@
     \fancyfoot[LE]{\thepage}
     \fancyfoot[C]{}
     \renewcommand{\headrulewidth}{0.3pt}}
-
-\newenvironment{abstract}
-% definizione ambiente abstract ispirato ad article, non presente in book
-  {%\cleardoublepage% togliere primo % se non si vuole sommario come un chapter
-    \thispagestyle{empty}%
-    \null \vfill\begin{center}%
-      \chapter*{\abstractname} \end{center}}%
-  {\vfill\null}
