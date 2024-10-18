@@ -23,6 +23,7 @@ class PrintMetrics:
         accuracy,
         f1,
         precision,
+        roc_auc,
         # accuracy_combined,
         # f1_combined,
         # precision_combined,
@@ -48,6 +49,7 @@ class PrintMetrics:
         - y-test (array-like):               for combined categories.
         - predictions (array-like):          Predicted labels for the test data
         - predictions_combined (array-like): for combined categories.
+        - roc_auc:                           area under the curve for roc curve
         """
 
         self.fpr         = fpr
@@ -57,6 +59,7 @@ class PrintMetrics:
         self.accuracy    = accuracy
         self.f1          = f1
         self.precision   = precision
+        self.roc_auc     = roc_auc
         # self.accuracy_combined = accuracy_combined
         # self.f1_combined = f1_combined
         # self.precision_combined = precision_combined
@@ -78,7 +81,11 @@ class PrintMetrics:
 
         plt.figure(figsize=(8, 6))
         plt.plot(
-            self.tpr, background_rejection, color="blue", lw=2, label="Full dataset"
+            self.tpr,
+            background_rejection,
+            color = "blue",
+            lw    = 2,
+            label = "Full dataset"
         )
         # plt.plot(
         #     self.tpr_combined,
@@ -104,18 +111,26 @@ class PrintMetrics:
         print("F1 Score: ", self.f1)
         print("Precision:", self.precision)
 
+
         # print("Accuracy Combined: ", self.accuracy_combined)
         # print("F1 Score Combined: ", self.f1_combined)
         # print("Precision Combined:", self.precision_combined)
 
 
+        print("ROC AUC   ", self.roc_auc)
+
+
         # Confusion Matrix
         print("------------------------------------------------------------confusion_matrix--------------------")        
-        cm = confusion_matrix(self.y_test, self.predictions)
+        cm = confusion_matrix(self.y_test,
+                              self.predictions)
 
         # Visualize Confusion Matrix
-        plt.figure(figsize=(8, 6))
-        sns.heatmap(cm, annot=True, fmt="d", cmap="Blues")
+        plt.figure(figsize = (8, 6))
+        sns.heatmap(cm,
+                    annot  = True,
+                    fmt    = "d",
+                    cmap   = "Blues")
         plt.title("Confusion Matrix (Full dataset)")
         plt.xlabel("Predicted values")
         plt.ylabel("True values")

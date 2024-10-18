@@ -124,6 +124,7 @@ with open(output_file, "w") as f:
         classifier.accuracy,
         classifier.f1,
         classifier.precision,
+        classifier.roc_auc,
         # classifier.accuracy_combined,
         # classifier.f1_combined,
         # classifier.precision_combined,
@@ -138,6 +139,29 @@ with open(output_file, "w") as f:
 
     print("----------------------------------------print_metrics--------------------")
     metrics_printer.print_metrics()
+
+    print("------------------------------------------------------------perf--------------------")        
+    # self.f1 = history.history['f1_score']
+    # val_f1_score = history.history['val_f1_score']
+
+    # loss = history.history['loss']
+    # val_loss = history.history['val_loss']
+
+    # epochs_range = range(CNNparameters["epochs"])
+
+    # plt.figure(figsize=(8, 8))
+    # plt.subplot(2, 1, 1)
+    # plt.plot(range(len(f1_score)), f1_score, label='Train')
+    # plt.plot(range(len(f1_score)), val_f1_score, label='Validation')
+    # plt.legend(loc='lower right')
+    # plt.title('Training and Validation F1 Score')
+
+    # plt.subplot(2, 1, 2)
+    # plt.plot(range(len(f1_score)), loss, label='Train')
+    # plt.plot(range(len(f1_score)), val_loss, label='Validation')
+    # plt.legend(loc='upper right')
+    # plt.title('Training and Validation Loss')
+    # plt.show()
 
 ############################### End ###############################
 print("--------------------END--------------------")

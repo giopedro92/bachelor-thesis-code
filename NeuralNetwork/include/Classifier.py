@@ -280,9 +280,7 @@ class NeuralNetwork:
                 layers.Dropout(
                     drop_out),
                 layers.Dense(1,
-                             activation = "sigmoid"),
-            ]
-        )
+                             activation = "sigmoid")])
 
         optimizer = keras.optimizers.Adam(
             learning_rate = learning_rate
@@ -310,13 +308,11 @@ class NeuralNetwork:
                                       y_train,
                                       epochs           = 10,
                                       batch_size       = 32,
-                                      validation_split = 0.2,
-        )
+                                      validation_split = 0.2)
         # DIVIDE TRAIN TRA TRAIN E VALIDATION validation_split=0.2
 
         # Calculates the elapsed time for training
         self.training_time = time.time() - start_time
-
 
 ############################### CLASS Additional tools ###############################
 
