@@ -48,26 +48,23 @@ sudo docker rmi <name>:<tag>
 -->
 
 Run the docker image:
-<!--
 - as `root`
     ```bash
     sudo docker run \
     -e DISPLAY=$DISPLAY \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
-    -v /home:/home \
+    -v /home/giovanni-pedrelli/Scrivania/TESI/Analysis:/opt \
     --rm \
     -it \
     analysis bash
     ```
--->
 
-/home/giovanni-pedrelli/Scrivania/TESI/Analysis
-- with `--user $(id -u)`
+- with `--user $(id -u)` **ALLOWS YOU TO USE TBrowser**
     ```bash
     sudo docker run \
     -e DISPLAY=$DISPLAY \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
-    -v /home:/home \
+    -v /home/giovanni-pedrelli/Scrivania/TESI/Analysis:/opt \
     --rm \
     -it \
     --user $(id -u) \

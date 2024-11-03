@@ -3,6 +3,28 @@
 \usepackage[utf8]{inputenc}
 \usepackage{newlfont} % per frontespizio
 
+%-------------------------------------LINGUE
+\usepackage[english,
+            italian]{babel}
+\usepackage[autostyle,
+            italian=guillemets]{csquotes}
+% per virgolette corrette
+% autostyle adatta lo stile delle citazioni alla lingua corrente del documento
+% italian=guillemets racchiude automaticamente tra virgolette caporali i campi che prevedono le virgolette
+
+%-------------------------------------BIBLIOGRAFIA
+\usepackage[backend=biber,
+            bibstyle=numeric,
+            citestyle=numeric,
+            style=numeric,
+            sorting=none,
+            backref,
+            hyperref]{biblatex}
+% Biber come motore bibliografico, è nuovo e da preferire a BibTex
+% sorting=none: elenco delle citazioni nella bibliografia=nell'ordine in cui vengono citate nel testo
+% backref: indica accanto a ciascun riferimento le pagine del documento in cui è citato
+\addbibresource{biblio.bib}
+
 %-------------------------------------BORDI
 \usepackage{geometry} % permette la modifica della gabbia del documento
 \geometry{
@@ -24,6 +46,27 @@
 
 %\usepackage{layaureo}
 % Pacchetto layaureo per la formattazione italiana
+
+%-------------------------------------IMMAGINI
+\usepackage{graphicx}
+% serve per includere immagini e grafici
+\graphicspath{{res/fig/}}
+% importa la cartella res/fig/ come cartella da cui caricare le immagini
+
+\usepackage[inkscapelatex=false]{svg}
+% permette di caricare immagini svg
+\svgpath{{res/fig/}} % cartella .svg
+
+%\usepackage{flafter}
+% impedisce alle figure di apparire prima della loro definizione nel testo
+
+%\usepackage{float}
+% permette di forzare il posizionamento dell’oggetto nel punto in cui è situato con l’opzione H
+
+%-------------------------------------TABELLE
+\usepackage{tabularray} % tabelle belle
+\usepackage{multirow} % tabelle con celle a mezza riga
+\usepackage{booktabs} % tabelle con filetti belli
 
 %-------------------------------------MATEMATICA
 \usepackage{amsmath}
@@ -47,67 +90,6 @@
 %-------------------------------------CHIMICA
 \usepackage{chemformula}
 
-%-------------------------------------LINGUE
-\usepackage[english,
-            italian]{babel}
-\usepackage[autostyle,
-            italian=guillemets]{csquotes}
-% per virgolette corrette
-% autostyle adatta lo stile delle citazioni alla lingua corrente del documento
-% italian=guillemets racchiude automaticamente tra virgolette caporali i campi che prevedono le virgolette
-
-%-------------------------------------IMMAGINI
-\usepackage{graphicx}
-% serve per includere immagini e grafici
-\graphicspath{{res/fig/}}
-% importa la cartella res/fig/ come cartella da cui caricare le immagini
-
-\usepackage[inkscapelatex=false]{svg}
-% permette di caricare immagini svg
-\svgpath{{res/fig/}} % cartella .svg
-
-%\usepackage{flafter}
-% impedisce alle figure di apparire prima della loro definizione nel testo
-
-%\usepackage{float}
-% permette di forzare il posizionamento dell’oggetto nel punto in cui è situato con l’opzione H
-
-%-------------------------------------TABELLE
-\usepackage{tabularray} % tabelle belle
-\usepackage{multirow} % tabelle con celle a mezza riga
-\usepackage{booktabs} % tabelle con filetti belli
-
-%-------------------------------------RIFERIMENTI
-\usepackage{hyperref}
-
-%ANTO
-%\usepackage[colorlinks=true,
- %   linkcolor=black,
-  %  urlcolor=teal,
-   % citecolor=black]{hyperref}
-
-%\hypersetup{
- %   colorlinks=true,
-  %  linkcolor=black,
-   % filecolor=magenta,      
-    %urlcolor=cyan,
-    %pdftitle={Overleaf Example},
-    %pdfpagemode=FullScreen,
-%}
-
-%-------------------------------------BIBLIOGRAFIA
-\usepackage[backend=biber,
-            bibstyle=numeric,
-            citestyle=numeric,
-            style=numeric,
-            sorting=none,
-            backref,
-            hyperref]{biblatex}
-% Biber come motore bibliografico, è nuovo e da preferire a BibTex
-% sorting=none: elenco delle citazioni nella bibliografia=nell'ordine in cui vengono citate nel testo
-% backref: indica accanto a ciascun riferimento le pagine del documento in cui è citato
-\addbibresource{biblio.bib}
-
 %-------------------------------------ALTRI
 %\usepackage{setspace} % serve a fornire comandi di interlinea standard
 %\onehalfspacing{} % imposta interlinea a 1,5 ed equivale a \linespread{1,5}
@@ -127,14 +109,57 @@
 
 %-------------------------------------LISTATI CODICE
 \usepackage{listings}
-\lstset{language=Python,
-        basicstyle=\ttfamily\small,
-        keywordstyle=\color{blue},
-        stringstyle=\color{red},
-        commentstyle=\color{green},
-        showstringspaces=false,
-        numbers=left,
-        numberstyle=\tiny\color{gray}}
+
+\lstdefinelanguage{Python}{
+  morekeywords={from, import, def, return},
+  comment=[l]{\#},
+  morestring=[b]",
+  alsodigit={-},
+  alsoletter={&},
+}
+
+\lstdefinestyle{myPython}{ %
+  language=Python,                    
+  % il linguaggio del codice
+  basicstyle=\ttfamily\small,  
+  % la dimensione dei font usati per il codice
+  numbers=left,                       
+  % dove mettere i numeri di linea
+  numberstyle=\tiny\color{gray},      
+  % lo stile usato per i numeri di linea
+  stepnumber=1,                       
+  % l'intervallo tra due numeri di linea. Se è 1, ogni linea sarà numerata
+  numbersep=5pt,                      
+  % quanto distano i numeri di linea dal codice
+  backgroundcolor=\color{white},      
+  % scegli il colore di sfondo. Devi aggiungere \usepackage{color}
+  showspaces=false,                   
+  % mostra gli spazi aggiungendo particolari underscore
+  showstringspaces=false,             
+  % sottolinea gli spazi all'interno delle stringhe
+  showtabs=false,                     
+  % mostra i tab all'interno delle stringhe aggiungendo particolari underscore
+  %frame=single,                       
+  % aggiunge un bordo attorno al codice
+  rulecolor=\color{black},            
+  % se non impostato, il colore del bordo potrebbe cambiare nelle interruzioni di riga
+  tabsize=4,                          
+  % imposta la dimensione del tab a 4 spazi
+  captionpos=b,                       
+  % imposta la posizione della didascalia in basso
+  breaklines=true,                    
+  % imposta l'interruzione automatica delle righe
+  breakatwhitespace=false,            
+  % imposta se le interruzioni automatiche dovrebbero avvenire solo agli spazi
+  title=\lstname,                     
+  % mostra il nome del file dei file inclusi con \lstinputlisting; prova anche caption al posto di title
+  keywordstyle=\color{blue},          
+  % stile delle parole chiave
+  commentstyle=\color{green},         
+  % stile dei commenti
+  stringstyle=\color{red},            
+  % stile delle stringhe letterali
+}
 
 %-------------------------------------Definizioni di comandi e ambienti
 \newenvironment{abstract}
@@ -155,6 +180,7 @@
     \fancyhead[RE,LO]{}
     \fancyfoot[C]{}
     \renewcommand{\headrulewidth}{0.3pt}}
+
 \newcommand{\fncymain}{%
     \fancyhead[RO]{{\footnotesize\rightmark}}
     \fancyfoot[RO]{\thepage}
@@ -162,3 +188,21 @@
     \fancyfoot[LE]{\thepage}
     \fancyfoot[C]{}
     \renewcommand{\headrulewidth}{0.3pt}}
+
+%-------------------------------------RIFERIMENTI
+\usepackage{hyperref} % DA CARICARE PER ULTIMO
+
+% ANTO
+% \usepackage[colorlinks=true,
+%     linkcolor=black,
+%     urlcolor=teal,
+%     citecolor=black]{hyperref}
+
+% \hypersetup{
+%     colorlinks=true,
+%     linkcolor=black,
+%     filecolor=magenta,      
+%     urlcolor=cyan,
+%     pdftitle={Overleaf Example},
+%     pdfpagemode=FullScreen,
+% }

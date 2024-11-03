@@ -228,7 +228,8 @@ class SignalBackgroundClassifier:
 
         print("------------------------------------------------------------print--------------------")
         print("Full dataset :")
-        print(classification_report(y_test, self.predictions))
+        print(classification_report(y_test,
+                                    self.predictions))
         # print("Categorisation :")
         # print(classification_report(self.y_test_combined, self.predictions_combined))
 
@@ -305,10 +306,10 @@ class NeuralNetwork:
 
         # funzione fondamentale con cui viene allenato il modello model.fit
         self.history = self.model.fit(X_train,
-                                      y_train,
-                                      epochs           = 10,
-                                      batch_size       = 32,
-                                      validation_split = 0.2)
+                                 y_train,
+                                 epochs           = 10,
+                                 batch_size       = 32,
+                                 validation_split = 0.2)
         # DIVIDE TRAIN TRA TRAIN E VALIDATION validation_split=0.2
 
         # Calculates the elapsed time for training

@@ -24,7 +24,7 @@ for model_name in model_names:
     file_path = os.path.join("evaluation_results/", file_name)
 
     with open(file_path, 'r') as f:
-        for _ in range(4):
+        for _ in range(5):
             next(f)
         fpr = []
         tpr = []

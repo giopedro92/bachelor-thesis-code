@@ -117,7 +117,7 @@ class PrintMetrics:
         # print("Precision Combined:", self.precision_combined)
 
 
-        print("ROC AUC   ", self.roc_auc)
+        print("ROC AUC:  ", self.roc_auc)
 
 
         # Confusion Matrix

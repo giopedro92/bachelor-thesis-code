@@ -84,13 +84,12 @@ if __name__ == "__main__":
     print("Training time ({}):".format(model_type), classifier.training_time)
     
     print("----------------------------------------evaluate_classifier--------------------")
-    classifier.evaluate_classifier(
-        data_prep.X_test,
-        data_prep.y_test,
-        # data_prep.X_test_cat1,
-        # data_prep.y_test_cat1,
-        # data_prep.X_test_cat2,
-        # data_prep.y_test_cat2,
+    classifier.evaluate_classifier(data_prep.X_test,
+                                   data_prep.y_test,
+                                   # data_prep.X_test_cat1,
+                                   # data_prep.y_test_cat1,
+                                   # data_prep.X_test_cat2,
+                                   # data_prep.y_test_cat2,
     )
 
 ############################### Print Results ###############################
@@ -104,9 +103,10 @@ output_file = os.path.join(folder1_path, model_type + ".txt")
 
 # It is necessary to create the output file required for the Metrics module
 with open(output_file, "w") as f:
-    f.write("accuracy:  {}\n".format(classifier.accuracy))  # Accuracy results
-    f.write("f1 score:  {}\n".format(classifier.f1))        # f1_score results
-    f.write("precision: {}\n".format(classifier.precision)) # precision results
+    f.write("accuracy:  {}\n".format(classifier.accuracy))  # Accuracy  result
+    f.write("f1 score:  {}\n".format(classifier.f1))        # f1_score  result
+    f.write("precision: {}\n".format(classifier.precision)) # precision result
+    f.write("ROC AUC:   {}\n".format(classifier.roc_auc))     # roc auc   result
     f.write("fpr\ttpr\n")  # Printing of TPR and FPR data for ROC plot.
     for i in range(len(classifier.fpr)):
         f.write("{}\t{}\n".format(classifier.fpr[i], classifier.tpr[i]))
@@ -116,52 +116,28 @@ with open(output_file, "w") as f:
 
     # Print Roc and Confusion Matrix
     print("----------------------------------------PrintMetrics--------------------")
-    metrics_printer = mp.PrintMetrics(
-        classifier.fpr,
-        classifier.tpr,
-        # classifier.fpr_combined,
-        # classifier.tpr_combined,
-        classifier.accuracy,
-        classifier.f1,
-        classifier.precision,
-        classifier.roc_auc,
-        # classifier.accuracy_combined,
-        # classifier.f1_combined,
-        # classifier.precision_combined,
-        data_prep.y_test,
-        # classifier.y_test_combined,
-        classifier.predictions,
-        # classifier.predictions_combined,
-        )
+    metrics_printer = mp.PrintMetrics(classifier.fpr,
+                                      classifier.tpr,
+                                      # classifier.fpr_combined,
+                                      # classifier.tpr_combined,
+                                      classifier.accuracy,
+                                      classifier.f1,
+                                      classifier.precision,
+                                      classifier.roc_auc,
+                                      # classifier.accuracy_combined,
+                                      # classifier.f1_combined,
+                                      # classifier.precision_combined,
+                                      data_prep.y_test,
+                                      # classifier.y_test_combined,
+                                      classifier.predictions,
+                                      # classifier.predictions_combined,
+                                     )
     
     print("----------------------------------------plot_roc_curve--------------------")    
     metrics_printer.plot_roc_curve()
 
     print("----------------------------------------print_metrics--------------------")
     metrics_printer.print_metrics()
-
-    print("------------------------------------------------------------perf--------------------")        
-    # self.f1 = history.history['f1_score']
-    # val_f1_score = history.history['val_f1_score']
-
-    # loss = history.history['loss']
-    # val_loss = history.history['val_loss']
-
-    # epochs_range = range(CNNparameters["epochs"])
-
-    # plt.figure(figsize=(8, 8))
-    # plt.subplot(2, 1, 1)
-    # plt.plot(range(len(f1_score)), f1_score, label='Train')
-    # plt.plot(range(len(f1_score)), val_f1_score, label='Validation')
-    # plt.legend(loc='lower right')
-    # plt.title('Training and Validation F1 Score')
-
-    # plt.subplot(2, 1, 2)
-    # plt.plot(range(len(f1_score)), loss, label='Train')
-    # plt.plot(range(len(f1_score)), val_loss, label='Validation')
-    # plt.legend(loc='upper right')
-    # plt.title('Training and Validation Loss')
-    # plt.show()
 
 ############################### End ###############################
 print("--------------------END--------------------")
